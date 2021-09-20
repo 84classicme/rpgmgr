@@ -1,15 +1,17 @@
 package io.festerson.rpgvault.util;
 
+import io.festerson.rpgvault.campaigns.CampaignRepository;
+import io.festerson.rpgvault.characters.CharacterRepository;
 import io.festerson.rpgvault.domain.*;
-import io.festerson.rpgvault.domain.Character;
-import io.festerson.rpgvault.repository.CampaignRepository;
-import io.festerson.rpgvault.repository.CharacterRepository;
-import io.festerson.rpgvault.repository.PlayerRepository;
+import io.festerson.rpgvault.players.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.core.publisher.Flux;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class TestUtils {
 
@@ -69,8 +71,8 @@ public class TestUtils {
             .build();
     }
 
-    public static Character buildCharacter(){
-        return Character
+    public static PlayerCharacter buildCharacter(){
+        return PlayerCharacter
             .builder()
             .name("test_character")
             .crace(CharacterRace.pickOne())
@@ -109,14 +111,14 @@ public class TestUtils {
         return (Flux.just(campaign1, campaign2, campaign3, buildCampaign(), buildCampaign()));
     }
 
-    public static Flux<Character> buildCharacterRepositoryTestCollection(){
-        Character character1 = buildCharacter();
-        Character character2 = buildCharacter();
-        Character character3 = buildCharacter();
-        character1.setPlayerId(PLAYER_ID);
-        character2.setPlayerId(PLAYER_ID);
-        character3.setName(CHARACTER_NAME);
-        return(Flux.just(character1, character2, character3, buildCharacter(), buildCharacter()));
+    public static Flux<PlayerCharacter> buildCharacterRepositoryTestCollection(){
+        PlayerCharacter playerCharacter1 = buildCharacter();
+        PlayerCharacter playerCharacter2 = buildCharacter();
+        PlayerCharacter playerCharacter3 = buildCharacter();
+        playerCharacter1.setPlayerId(PLAYER_ID);
+        playerCharacter2.setPlayerId(PLAYER_ID);
+        playerCharacter3.setName(CHARACTER_NAME);
+        return(Flux.just(playerCharacter1, playerCharacter2, playerCharacter3, buildCharacter(), buildCharacter()));
     }
 
     public static Flux<Player> buildPlayerRepositoryTestCollection(){

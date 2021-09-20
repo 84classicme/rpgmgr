@@ -2,8 +2,8 @@ package io.festerson.rpgvault.domain;
 
 public enum CharacterType {
 
-    PC  ("Character"),
-    NPC  ("Non-player Character");
+    PC  ("PlayerCharacter"),
+    NPC  ("Non-player PlayerCharacter");
 
     private final String name;
 

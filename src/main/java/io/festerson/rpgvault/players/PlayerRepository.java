@@ -1,4 +1,4 @@
-package io.festerson.rpgvault.repository;
+package io.festerson.rpgvault.players;
 
 import io.festerson.rpgvault.domain.Player;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;

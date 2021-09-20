@@ -6,7 +6,9 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -15,7 +17,7 @@ import javax.validation.constraints.*;
 @ToString
 @Builder
 @Document(collection="characters")
-public class Character {
+public class PlayerCharacter {
 
     @Id
     private String id;
@@ -74,7 +76,7 @@ public class Character {
     @JsonProperty("player")
     private String playerId;
 
-   public Character(
+   public PlayerCharacter(
             String name,
             CharacterRace crace,
             CharacterClass cclass,
