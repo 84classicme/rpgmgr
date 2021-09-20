@@ -91,9 +91,8 @@ public class CampaignController {
     public  Mono<ResponseEntity<Void>> deleteCampaign(@PathVariable String campaignId){
         return campaignRepository.findById(campaignId)
             .flatMap(toDelete ->
-                campaignRepository.delete(toDelete)
-                    .then(Mono.just(ResponseEntity.noContent().<Void>build()))
+                campaignRepository.delete(toDelete).thenReturn(ResponseEntity.noContent().<Void>build())
             )
-            .defaultIfEmpty(ResponseEntity.notFound().build());
+            .defaultIfEmpty(ResponseEntity.notFound().<Void>build());
     }
 }

@@ -36,12 +36,12 @@ public class CharacterController {
     public Mono<ResponseEntity<List<Character>>> getCharacters(@RequestParam(value="player", required=false) String characterId) {
         if (characterId == null || characterId.isEmpty()) {
             return characterRepository.findAll()
-                    .collectList()
-                    .map(list -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(list));
-        }
-        return characterRepository.getCharactersByPlayerId(characterId)
                 .collectList()
                 .map(list -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(list));
+        }
+        return characterRepository.getCharactersByPlayerId(characterId)
+            .collectList()
+            .map(list -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(list));
     }
 
     @GetMapping("/characters/{characterId}")
@@ -95,8 +95,7 @@ public class CharacterController {
     public Mono<ResponseEntity<Void>> deleteCharacter(@PathVariable String characterId){
         return characterRepository.findById(characterId)
             .flatMap(toDelete ->
-                    characterRepository.delete(toDelete)
-                            .then(Mono.just(ResponseEntity.noContent().<Void>build()))
+                    characterRepository.delete(toDelete).thenReturn(ResponseEntity.noContent().<Void>build())
             )
             .defaultIfEmpty(ResponseEntity.notFound().build());
     }
