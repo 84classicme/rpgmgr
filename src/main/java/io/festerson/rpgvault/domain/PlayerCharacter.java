@@ -14,7 +14,6 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Builder
 @Document(collection="characters")
 public class PlayerCharacter {
