@@ -1,5 +1,6 @@
 package io.festerson.rpgvault.exception;
 
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
@@ -17,7 +18,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@CommonsLog
 @Order(-2)
 public class RpgVaultExceptionHandler extends AbstractErrorWebExceptionHandler {
 
@@ -43,17 +44,17 @@ public class RpgVaultExceptionHandler extends AbstractErrorWebExceptionHandler {
 
         final Map<String, Object> errorPropertiesMap = getErrorAttributes(request, false);
 
-        System.out.println(">>>>>>>>>>>>> message: " + errorPropertiesMap.get("message"));
+        log.error("START:renderErrorResponse: " + errorPropertiesMap.get("message"));
 
         if(errorPropertiesMap.containsKey("errors")) {
             StringBuilder errorMessages = new StringBuilder();
             List<FieldError> fieldErrors = (List) errorPropertiesMap.get("errors");
             fieldErrors.forEach(e -> errorMessages.append(e.getDefaultMessage() + " "));
             errorPropertiesMap.remove("errors");
-            System.out.println(">>>>>>>>>>>>> message: " + errorPropertiesMap.get("message"));
+            log.info("Adding validation messages.");
             errorPropertiesMap.replace("message", errorMessages.toString());
         }
-
+        log.error("END:renderErrorResponse");
         return ServerResponse
             .status((Integer)errorPropertiesMap.get("status"))
             .body(BodyInserters.fromObject(errorPropertiesMap));
