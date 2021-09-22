@@ -93,11 +93,17 @@ public class TestUtils {
     }
 
     public static Player buildPlayer(){
+        return buildPlayer(null,"test", "player", "me@notu.com", "http://www.imgurl");
+    }
+
+    public static Player buildPlayer(String id, String firstName, String lastName, String email, String imageUrl){
         return Player
             .builder()
-            .name("test_player")
-            .email("me@notu.com")
-            .imageUrl("imgurl")
+            .id(id)
+            .firstName(firstName)
+            .lastName(lastName)
+            .email(email)
+            .imageUrl(imageUrl)
             .build();
     }
 
@@ -121,8 +127,22 @@ public class TestUtils {
         return(Flux.just(playerCharacter1, playerCharacter2, playerCharacter3, buildCharacter(), buildCharacter()));
     }
 
-    public static Flux<Player> buildPlayerRepositoryTestCollection(){
-        return(Flux.just(buildPlayer(), buildPlayer(), buildPlayer(), buildPlayer(), buildPlayer()));
+    public static Flux<Player> buildPlayers(){
+        return(Flux.just(buildPlayer("10001", "Annie", "Jones", "aj@example.com", "http://example.com/aj.jpg"),
+            buildPlayer("10002","John","Johnson", "jj@example.com", "http://example.com/jj.jpg"),
+            buildPlayer("10003","David", "Davidson", "dd@example.com", "http://example.com/dd.jpg")));
+    }
+
+    public static Flux<Player> buildPlayersToUpdate(){
+        return(Flux.just(buildPlayer("10004", "Pat", "Samples", "ps@example.com", "http://example.com/ps.jpg"),
+            buildPlayer("10005","Ben","Hur", "bh@example.com", "http://example.com/bh.jpg"),
+            buildPlayer("10006","Peaches", "Moscowitz", "pm@example.com", "http://example.com/pm.jpg")));
+    }
+
+    public static Flux<Player> buildPlayersToDelete(){
+        return(Flux.just(buildPlayer("10007", "Johnny", "Guitar", "jg@example.com", "http://example.com/jg.jpg"),
+            buildPlayer("10008","Sam","Spade", "ss@example.com", "http://example.com/s.jpg"),
+            buildPlayer("10009","Petulia", "Frizzlefoam", "pf@example.com", "http://example.com/pf.jpg")));
     }
 
 }

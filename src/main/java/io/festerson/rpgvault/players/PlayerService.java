@@ -21,15 +21,15 @@ public class PlayerService {
     }
 
     public Mono<Player> createPlayer(Player player){
-        return playerRepository.save(player).map(player1 -> player1);
+        return playerRepository.save(player);
     }
 
     public Mono<Player> updatePlayer(String id, Player player){
         return playerRepository.findById(id)
             .flatMap(found -> {
                 player.setId(id);
-                if(player.getName() != null && !player.getName().isEmpty())
-                    found.setName(player.getName());
+                if(player.getFirstName() != null && !player.getFirstName().isEmpty())
+                    found.setFirstName(player.getFirstName());
                 if(player.getEmail() != null && !player.getEmail().isEmpty())
                     found.setEmail(player.getEmail());
                 if(player.getImageUrl() != null && !player.getImageUrl().isEmpty())
@@ -42,7 +42,7 @@ public class PlayerService {
     public Mono<Void> deletePlayer(String id){
         return playerRepository.findById(id)
             .flatMap(toDelete ->
-                playerRepository.delete(toDelete));
+                playerRepository.delete(toDelete)).then();
     }
 
 }

@@ -31,7 +31,7 @@ public class PlayerServiceTest {
 
     @Test
     public void testGetPlayersHappyPath() throws Exception {
-        Flux<Player> playerFlux = TestUtils.buildPlayerRepositoryTestCollection();
+        Flux<Player> playerFlux = TestUtils.buildPlayers();
         List<Player> list = playerFlux.collectList().block();
         Mockito.when(playerRepository.findAll()).thenReturn(playerFlux);
         StepVerifier.create(playerService.getPlayers())
@@ -46,7 +46,7 @@ public class PlayerServiceTest {
         Mockito.when(playerRepository.findById("1")).thenReturn(player);
         StepVerifier.create(playerService.getPlayerById("1"))
             .expectNextMatches(result -> {
-                Assertions.assertThat(result.getName()).isEqualTo(expected.getName());
+                Assertions.assertThat(result.getFirstName()).isEqualTo(expected.getFirstName());
                 return true;
             })
             .verifyComplete();
@@ -59,7 +59,7 @@ public class PlayerServiceTest {
         Mockito.when(playerRepository.save(expected)).thenReturn(Mono.just(expected));
         StepVerifier.create(playerService.createPlayer(expected))
             .expectNextMatches(result -> {
-                Assertions.assertThat(result.getName()).isEqualTo(expected.getName());
+                Assertions.assertThat(result.getFirstName()).isEqualTo(expected.getFirstName());
                 return true;
             })
             .verifyComplete();
@@ -72,7 +72,7 @@ public class PlayerServiceTest {
         Mockito.when(playerRepository.findById("1")).thenReturn(Mono.just(expected));
         StepVerifier.create(playerService.updatePlayer("1", expected))
             .expectNextMatches(result -> {
-                Assertions.assertThat(result.getName()).isEqualTo(expected.getName());
+                Assertions.assertThat(result.getFirstName()).isEqualTo(expected.getFirstName());
                 return true;
             })
             .verifyComplete();

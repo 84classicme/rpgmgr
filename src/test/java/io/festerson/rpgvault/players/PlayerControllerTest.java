@@ -30,7 +30,7 @@ public class PlayerControllerTest {
 
     @Test
     public void testGetPlayersHappyPath() throws Exception {
-        Flux<Player> playerFlux = TestUtils.buildPlayerRepositoryTestCollection();
+        Flux<Player> playerFlux = TestUtils.buildPlayers();
         List<Player> list = playerFlux.collectList().block();
         Mockito.when(playerService.getPlayers()).thenReturn(playerFlux);
         StepVerifier.create(playerController.getPlayers())
@@ -46,7 +46,7 @@ public class PlayerControllerTest {
         StepVerifier.create(playerController.getPlayer("1"))
             .expectNextMatches(response -> {
                 Player result = response.getBody();
-                Assertions.assertThat(result.getName()).isEqualTo(expected.getName());
+                Assertions.assertThat(result.getFirstName()).isEqualTo(expected.getFirstName());
                 return true;
             })
             .verifyComplete();
@@ -59,7 +59,7 @@ public class PlayerControllerTest {
        StepVerifier.create(playerController.savePlayer(expected))
            .expectNextMatches(response -> {
                Player result = response.getBody();
-               Assertions.assertThat(result.getName()).isEqualTo(expected.getName());
+               Assertions.assertThat(result.getFirstName()).isEqualTo(expected.getFirstName());
                return true;
            })
            .verifyComplete();
@@ -73,7 +73,7 @@ public class PlayerControllerTest {
         StepVerifier.create(playerController.updatePlayer(expected, "1"))
             .expectNextMatches(response -> {
                 Player result = response.getBody();
-                Assertions.assertThat(result.getName()).isEqualTo(expected.getName());
+                Assertions.assertThat(result.getFirstName()).isEqualTo(expected.getFirstName());
                 return true;
             })
             .verifyComplete();
