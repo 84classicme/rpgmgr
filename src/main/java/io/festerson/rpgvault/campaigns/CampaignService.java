@@ -28,7 +28,7 @@ public class CampaignService {
     @Autowired
     private ExceptionService exceptionService;
 
-    @Value( "${rest.country-service.endpoint-url}" )
+    @Value( "${rest.campaign-service.endpoint-url}" )
     private String restEndpointUrl;
 
     private WebClientConfig webClientConfig;
@@ -88,7 +88,7 @@ public class CampaignService {
         webClientConfig = new WebClientConfig();
         WebClient reactiveRestClient = webClientConfig.getReactiveRestClient();
         return reactiveRestClient.get()
-            .uri(this.restEndpointUrl+"/{name}", input)
+            .uri(this.restEndpointUrl)
             .exchangeToMono(response -> {
                 if(response.rawStatusCode() == 200){
                     return response.bodyToMono(CampaignRequest.class);
@@ -96,16 +96,16 @@ public class CampaignService {
                 else if (response.statusCode().is4xxClientError()){
                     return Mono.error(
                         new ClientException(
-                            "CLIENT EXCEPTION in CountryService.",
+                            "CLIENT EXCEPTION in CampaignService.",
                             response.rawStatusCode())) ;
                 } else if (response.statusCode().is5xxServerError()){
                     return Mono.error(
                         new ServiceException(
-                            "EXTERNAL SERVICE EXCEPTION in CountryService.",
+                            "EXTERNAL SERVICE EXCEPTION in CampaignService.",
                             response.rawStatusCode()));
                 } else {
                     return Mono.error( new ServiceException(
-                        "SERVICE EXCEPTION in CountryService. Unexpected response. Retrying...",
+                        "SERVICE EXCEPTION in CampaignService. Unexpected response. Retrying...",
                         response.rawStatusCode()));
                 }})
             .retryWhen(Retry.backoff(3, Duration.ofSeconds(5))
@@ -122,7 +122,7 @@ public class CampaignService {
                 handleClientException(clientException, input)
                     .then(Mono.error(
                         new ApplicationException(
-                            "Cannot process CountryService.getCountry due to client error.",
+                            "Cannot process CampaignService.getCampaignDataRestService due to client error.",
                             clientException))));
     }
 
@@ -132,24 +132,24 @@ public class CampaignService {
     }
 
     private Mono<Void> handleServiceException(ServiceException e, CampaignRequest input){
-        System.out.println("Handling service exception in CountryService.");
+        System.out.println("Handling service exception in CampaignService.");
         return recordException(e, input.toString());
     }
 
     private Mono<Void> handleClientException(ClientException e, CampaignRequest input){
-        System.out.println("Handling client exception in CountryService.");
+        System.out.println("Handling client exception in CampaignService.");
         return recordException(e, input.toString());
     }
 
     private Mono<Void> recordException(Exception e, String payload){
-        System.out.println("Recording exception in CountryService.");
+        System.out.println("Recording exception in CampaignService.");
         return exceptionService.recordExceptionEvent(buildExceptionEvent(e, payload));
     }
 
     private ExceptionEvent buildExceptionEvent(Exception e, String payload){
         return ExceptionEvent.builder()
             .message(e.getMessage())
-            .service("CountryService")
+            .service("CampaignService")
             .exception(e.getClass().getSimpleName())
             .payload(payload)
             .datetime(ZonedDateTime.now(ZoneOffset.UTC).toString()) //UTC timestamp as string

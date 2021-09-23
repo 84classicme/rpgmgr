@@ -1,9 +1,11 @@
 package io.festerson.rpgvault.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.generated.GetCountryRequest;
 import com.generated.GetCountryResponse;
 import io.festerson.rpgvault.campaigns.CampaignRepository;
+import io.festerson.rpgvault.campaigns.CampaignRequest;
 import io.festerson.rpgvault.characters.CharacterRepository;
 import io.festerson.rpgvault.domain.*;
 import io.festerson.rpgvault.players.PlayerRepository;
@@ -164,6 +166,13 @@ public class TestUtils {
         return(Flux.just(buildPlayer("10020", "Johnny", "Guitar", "jg@example.com", "US","http://example.com/jg.jpg"),
             buildPlayer("10021","Sam","Spade", "ss@example.com", "US","http://example.com/s.jpg"),
             buildPlayer("10022","Petulia", "Frizzlefoam", "pf@example.com", "US","http://example.com/pf.jpg")));
+    }
+
+    public static CampaignRequest getCampaignRequestFromJson(String path) throws IOException {
+        if (path == null || path.isEmpty()) path = "src/test/resources/json/campaign.json";
+        File file = new File(path);
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(file, CampaignRequest.class);
     }
 
     public static GetCountryRequest getCountryRequestFromXml(String path) throws IOException {
