@@ -1,31 +1,34 @@
 package io.festerson.rpgvault.characters;
 
 import io.festerson.rpgvault.domain.PlayerCharacter;
+import io.festerson.rpgvault.exception.RpgMgrException;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
+@CommonsLog
 public class CharacterService {
 
     @Autowired
     private CharacterRepository characterRepository;
 
     public Flux<PlayerCharacter> getCharacters(){
-        return characterRepository.findAll();
+        return characterRepository.findAll().onErrorResume(t -> Mono.error(handleException(t)));
     }
 
     public Flux<PlayerCharacter> getCharactersByPlayerId(String id){
-        return characterRepository.getCharactersByPlayerId(id);
+        return characterRepository.getCharactersByPlayerId(id).onErrorResume(t -> Mono.error(handleException(t)));
     }
 
     public Mono<PlayerCharacter> getCharacterById(String id){
-        return characterRepository.findById(id);
+        return characterRepository.findById(id).onErrorResume(t -> Mono.error(handleException(t)));
     }
 
     public Mono<PlayerCharacter> createCharacter(PlayerCharacter playerCharacter){
-        return characterRepository.save(playerCharacter).map(campaign1 -> campaign1);
+        return characterRepository.save(playerCharacter).map(campaign1 -> campaign1).onErrorResume(t -> Mono.error(handleException(t)));
     }
 
     public Mono<PlayerCharacter> updateCharacter(String id, PlayerCharacter playerCharacter){
@@ -62,13 +65,18 @@ public class CharacterService {
                     found.setWisdom(playerCharacter.getWisdom());
                 return Mono.just(found);
             })
-            .flatMap(updatedCharacter -> characterRepository.save(updatedCharacter));
+            .flatMap(updatedCharacter -> characterRepository.save(updatedCharacter))
+            .onErrorResume(t -> Mono.error(handleException(t)));
     }
 
     public Mono<Void> deleteCharacter(String id){
         return characterRepository.findById(id)
-            .flatMap(toDelete ->
-                characterRepository.delete(toDelete));
+            .flatMap(toDelete -> characterRepository.delete(toDelete))
+            .onErrorResume(t -> Mono.error(handleException(t)));
     }
 
+    private RpgMgrException handleException(Throwable t){
+        log.error("Exception in PlayerController:", t);
+        return new RpgMgrException(t);
+    }
 }

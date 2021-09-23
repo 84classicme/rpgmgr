@@ -31,18 +31,30 @@ public class CampaignController {
         if (playerId == null || playerId.isEmpty()) {
             return campaignService.getCampaigns()
                 .collectList()
-                .map(list -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(list));
+                .map(list -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(list))
+                .onErrorReturn(ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .header("RpgMgrMessage", "Server error fetching all campaigns")
+                    .build());
         }
         return campaignService.getCampaignsByPlayerId(playerId)
             .collectList()
-            .map(list -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(list));
+            .map(list -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(list))
+            .onErrorReturn(ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .header("RpgMgrMessage", "Server error fetching campaigns for player id: " + playerId)
+                .build());
     }
 
     @GetMapping("/campaigns/{campaignId}")
     public Mono<ResponseEntity<Campaign>> getCampaign(@PathVariable String campaignId) {
         return campaignService.getCampaignById(campaignId)
             .map(character -> ResponseEntity.ok().body(character))
-            .defaultIfEmpty(ResponseEntity.notFound().build());
+            .defaultIfEmpty(ResponseEntity.notFound().build())
+            .onErrorReturn(ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .header("RpgMgrMessage", "Server error fetching campaign id: " + campaignId)
+                .build());
     }
 
     @PostMapping(value="/campaigns", consumes = "application/json")
@@ -54,6 +66,10 @@ public class CampaignController {
                 .body(saved))
             .defaultIfEmpty(ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .build())
+            .onErrorReturn(ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .header("RpgMgrMessage", "Server error creating campaign: " + campaign)
                 .build());
     }
 
@@ -64,13 +80,23 @@ public class CampaignController {
                 .status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(updatedCharacter))
-            .defaultIfEmpty(ResponseEntity.notFound().build());
+            .defaultIfEmpty(ResponseEntity.notFound().build())
+            .onErrorReturn(ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .header("RpgMgrMessage", "Server error updating campaign: " + campaign)
+                .build());
     }
 
     @DeleteMapping("/campaigns/{campaignId}")
     public  Mono<ResponseEntity<Void>> deleteCampaign(@PathVariable String campaignId){
         return campaignService.deleteCampaign(campaignId)
             .thenReturn(ResponseEntity.noContent().<Void>build())
-            .defaultIfEmpty(ResponseEntity.notFound().<Void>build());
+            .defaultIfEmpty(ResponseEntity.notFound().<Void>build())
+            .onErrorReturn(ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .header("RpgMgrMessage", "Server error deleting campaign id: " + campaignId)
+                .build());
     }
+
+
 }

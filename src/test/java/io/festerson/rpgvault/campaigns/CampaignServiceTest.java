@@ -1,6 +1,9 @@
 package io.festerson.rpgvault.campaigns;
 
+import com.mongodb.MongoClientException;
 import io.festerson.rpgvault.domain.Campaign;
+import io.festerson.rpgvault.domain.Player;
+import io.festerson.rpgvault.exception.RpgMgrException;
 import io.festerson.rpgvault.util.TestUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +44,18 @@ public class CampaignServiceTest {
     }
 
     @Test
+    public void testGetPlayersException() throws Exception {
+        String message = "TEST FAIL";
+        Mockito.doReturn(Flux.error(new MongoClientException(message))).when(campaignRepository).findAll();
+        StepVerifier.create(campaignService.getCampaigns()).verifyErrorMatches(throwable -> {
+            Assertions.assertThat(throwable instanceof RpgMgrException).isTrue();
+            Assertions.assertThat(((RpgMgrException) throwable).getComposed() instanceof MongoClientException).isTrue();
+            Assertions.assertThat(((RpgMgrException) throwable).getComposed().getMessage()).isEqualTo(message);
+            return true;
+        });
+    }
+
+    @Test
     public void testGetCampaignByIdHappyPath() throws Exception {
         Mono<Campaign> campaign = Mono.just(TestUtils.buildCampaign());
         Campaign expected = campaign.block();
@@ -54,12 +69,37 @@ public class CampaignServiceTest {
     }
 
     @Test
+    public void testGetCampaignByIdException() throws Exception {
+        String message = "TEST FAIL";
+        Mockito.doReturn(Mono.error(new MongoClientException(message))).when(campaignRepository).findById("1");
+        StepVerifier.create(campaignService.getCampaignById("1")).verifyErrorMatches(throwable -> {
+            Assertions.assertThat(throwable instanceof RpgMgrException).isTrue();
+            Assertions.assertThat(((RpgMgrException) throwable).getComposed() instanceof MongoClientException).isTrue();
+            Assertions.assertThat(((RpgMgrException) throwable).getComposed().getMessage()).isEqualTo(message);
+            return true;
+        });
+    }
+
+    @Test
     public void testGetCampaignsByPlayerIdHappyPath() throws Exception {
         Flux<Campaign> campaigns = TestUtils.buildCampaignRepositoryTestCollection();
         List<Campaign> list = campaigns.collectList().block();
         Mockito.when(campaignRepository.getCampaignsByPlayerId("1")).thenReturn(campaigns);
-        StepVerifier.create(campaignService.getCampaigns())
+        StepVerifier.create(campaignService.getCampaignsByPlayerId("1"))
             .expectNextCount(list.size());
+    }
+
+    @Test
+    public void testGetCampaignsByPlayerIdException() throws Exception {
+        String message = "TEST FAIL";
+        Mockito.doReturn(Flux.error(new MongoClientException(message))).when(campaignRepository).getCampaignsByPlayerId("1");
+        StepVerifier.create(campaignService.getCampaignsByPlayerId("1"))
+            .verifyErrorMatches(throwable -> {
+                Assertions.assertThat(throwable instanceof RpgMgrException).isTrue();
+                Assertions.assertThat(((RpgMgrException) throwable).getComposed() instanceof MongoClientException).isTrue();
+                Assertions.assertThat(((RpgMgrException) throwable).getComposed().getMessage()).isEqualTo(message);
+            return true;
+        });
     }
 
     @Test
@@ -72,6 +112,20 @@ public class CampaignServiceTest {
                 return true;
             })
             .verifyComplete();
+    }
+
+    @Test
+    public void testCreateCampaignException() throws Exception {
+        Campaign expected = TestUtils.buildCampaign();
+        String message = "TEST FAIL";
+        Mockito.doReturn(Mono.error(new MongoClientException(message))).when(campaignRepository).save(expected);
+        StepVerifier.create(campaignService.createCampaign(expected))
+            .verifyErrorMatches(throwable -> {
+                Assertions.assertThat(throwable instanceof RpgMgrException).isTrue();
+                Assertions.assertThat(((RpgMgrException) throwable).getComposed() instanceof MongoClientException).isTrue();
+                Assertions.assertThat(((RpgMgrException) throwable).getComposed().getMessage()).isEqualTo(message);
+                return true;
+            });
     }
 
     @Test
@@ -88,10 +142,40 @@ public class CampaignServiceTest {
     }
 
     @Test
+    public void testUpdateCampaignException() throws Exception {
+        Campaign expected = TestUtils.buildCampaign();
+        String message = "TEST FAIL";
+        Mockito.when(campaignRepository.findById("1")).thenReturn(Mono.just(expected));
+        Mockito.doReturn(Mono.error(new MongoClientException(message))).when(campaignRepository).save(expected);
+        StepVerifier.create(campaignService.updateCampaign("1", expected))
+            .verifyErrorMatches(throwable -> {
+                Assertions.assertThat(throwable instanceof RpgMgrException).isTrue();
+                Assertions.assertThat(((RpgMgrException) throwable).getComposed() instanceof MongoClientException).isTrue();
+                Assertions.assertThat(((RpgMgrException) throwable).getComposed().getMessage()).isEqualTo(message);
+                return true;
+            });
+    }
+
+    @Test
     public void testDeleteCampaignHappyPath() throws Exception {
         Campaign campaign = TestUtils.buildCampaign();
         Mockito.when(campaignRepository.findById("1")).thenReturn(Mono.just(campaign));
         Mockito.when(campaignRepository.delete(campaign)).thenReturn(Mono.empty());
         StepVerifier.create(campaignService.deleteCampaign("1")).verifyComplete();
+    }
+
+    @Test
+    public void testDeleteCampaignException() throws Exception {
+        Campaign expected = TestUtils.buildCampaign();
+        String message = "TEST FAIL";
+        Mockito.when(campaignRepository.findById("1")).thenReturn(Mono.just(expected));
+        Mockito.doReturn(Mono.error(new MongoClientException(message))).when(campaignRepository).delete(expected);
+        StepVerifier.create(campaignService.deleteCampaign("1"))
+            .verifyErrorMatches(throwable -> {
+                Assertions.assertThat(throwable instanceof RpgMgrException).isTrue();
+                Assertions.assertThat(((RpgMgrException) throwable).getComposed() instanceof MongoClientException).isTrue();
+                Assertions.assertThat(((RpgMgrException) throwable).getComposed().getMessage()).isEqualTo(message);
+                return true;
+            });
     }
 }

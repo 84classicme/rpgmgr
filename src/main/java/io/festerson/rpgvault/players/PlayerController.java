@@ -45,7 +45,7 @@ public class PlayerController {
             .defaultIfEmpty(ResponseEntity.notFound().build())
             .onErrorReturn(ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .header("RpgMgrMessage", "Server error fetching player id :" + playerId)
+                .header("RpgMgrMessage", "Server error fetching player id: " + playerId)
                 .build());
     }
 
@@ -59,7 +59,7 @@ public class PlayerController {
                     .body(saved))
             .defaultIfEmpty(ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .header("RpgMgrMessage", "Server error creating player.")
+                    .header("RpgMgrMessage", "Server error creating player: " + player)
                     .build())
             .onErrorReturn(ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -78,7 +78,7 @@ public class PlayerController {
             .defaultIfEmpty(ResponseEntity.notFound().build())
             .onErrorReturn(ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .header("RpgMgrMessage", "Server error creating player id:" + playerId)
+                .header("RpgMgrMessage", "Server error creating player id: " + playerId)
                 .build());
     }
 
@@ -90,7 +90,7 @@ public class PlayerController {
             .defaultIfEmpty(ResponseEntity.notFound().<Void>build())
             .onErrorReturn(ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .header("RpgMgrMessage", "Server error deleting player id :" + playerId)
+                .header("RpgMgrMessage", "Server error deleting player id: " + playerId)
                 .build());
     }
 }
