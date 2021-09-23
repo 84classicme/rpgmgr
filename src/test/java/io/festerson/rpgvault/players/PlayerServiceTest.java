@@ -1,23 +1,28 @@
 package io.festerson.rpgvault.players;
 
+import com.generated.GetCountryRequest;
+import com.generated.GetCountryResponse;
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.mongodb.MongoClientException;
 import io.festerson.rpgvault.domain.Player;
+import io.festerson.rpgvault.exception.ExceptionEvent;
 import io.festerson.rpgvault.exception.RpgMgrException;
 import io.festerson.rpgvault.util.TestUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
+import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.util.List;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
+@WireMockTest(httpPort = 8080)
 public class PlayerServiceTest {
 
     @InjectMocks
@@ -26,9 +31,12 @@ public class PlayerServiceTest {
     @Mock
     PlayerRepository playerRepository;
 
+    @Captor
+    ArgumentCaptor<ExceptionEvent> exceptionEventCaptor;
+
     @BeforeEach
     public void setup(){
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -155,5 +163,20 @@ public class PlayerServiceTest {
                 Assertions.assertThat(((RpgMgrException) throwable).getComposed().getMessage()).isEqualTo(message);
                 return true;
             });
+    }
+
+    @Test
+    public void testGetCountryFromWS() throws IOException {
+        ReflectionTestUtils.setField(playerService, "webserviceEndpointUrl", "http://localhost:8080/getCountry");
+        GetCountryRequest request = TestUtils.getCountryRequestFromXml("src/test/resources/xml/CountryRequest.xml");
+        String mockresponse = "";
+        GetCountryResponse fromXmlSoapObject = TestUtils.getCountryResponseFromXml("src/test/resources/xml/CountryResponse.xml");
+        mockresponse = TestUtils.serializeObject(fromXmlSoapObject, "http://io.generated/country-service", "tns1");
+        stubFor(post(urlPathMatching("/getCountry"))
+            .willReturn(aResponse().withHeader("Content-Type", "text/xml").withBody(mockresponse)));
+
+        StepVerifier.create(playerService.getCountryFromWebService(request))
+            .expectNextMatches(response -> "NewTest".equals(response.getCountry().getName()))
+            .verifyComplete();
     }
 }

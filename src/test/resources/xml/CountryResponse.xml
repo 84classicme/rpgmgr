@@ -1,8 +1,8 @@
-<GetCountryResponse>
-    <countryRequest>
+<getCountryResponse>
+    <country>
         <name>NewTest</name>
         <population>1</population>
         <capital>Here</capital>
         <currency>MGB</currency>
-    </countryRequest>
-</GetCountryResponse>
+    </country>
+</getCountryResponse>
