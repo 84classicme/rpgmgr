@@ -27,29 +27,32 @@ Feature: Manage player data via CRUD interface
     When I create a new player
     * first name is <firstname>
     * last name is <lastname>
+    * country is <country>
     * email is <email>
     * image url is <imageurl>
     And I POST a request into the system
     Then the system creates the record and responds with http status code 201 and returns the new player with a unique id
 
     Examples:
-      |firstname      |lastname     |email                 | imageurl                  |
-      |Donnie         |Phillips    |dp@example.com        | http://example.com/dp.jpg |
-      |Earl           |Monroe      |em@example.com        | http://example.com/em.jpg |
-      |Franklin       |Freewheel   |ff@example.com        | http://example.com/ff.jpg |
+      |firstname      |lastname    |country |email                 | imageurl                  |
+      |Donnie         |Phillips    |US      |dp@example.com        | http://example.com/dp.jpg |
+      |Earl           |Monroe      |India   |em@example.com        | http://example.com/em.jpg |
+      |Franklin       |Freewheel   |Italy   |ff@example.com        | http://example.com/ff.jpg |
 
   @UpdatePlayer
   Scenario Outline:  Update details for given player by id
     Given player data exists that needs to be updated
-    When I have new <firstname> <lastname> <newemail> or <imageurl> data for a <playerid>
+    When I have new <firstname> <lastname> <email> <country> or <imageurl> data for a <playerid>
     And I PUT a request into the system
     Then the system updates the record and responds with http status code 200 and returns the updated player
 
     Examples:
-      |playerid     |newemail                 |firstname       |lastname       | imageurl                  |
-      |10004        |ps@newexample.com        |Pat             |Samples        | http://example.com/ps.jpg |
-      |10005        |bh@newexample.com        |Ben             |Hur            | http://example.com/bh.jpg |
-      |10006        |pm@newexample.com        |Peaches         |Moscowitz      | http://example.com/pm.jpg |
+      |playerid     |email                    |firstname       |lastname       |country | imageurl                     |
+      |10010        |ps@NEWexample.com        |Pat             |Samples        |US      | http://example.com/ps.jpg    |
+      |10011        |bh@example.com           |NEW             |Hur            |US      | http://example.com/bh.jpg    |
+      |10012        |pm@example.com           |Peaches         |NEW            |US      | http://example.com/pm.jpg    |
+      |10013        |ls@example.com           |Lisa            |Simpson        |NEW     | http://example.com/ls.jpg    |
+      |10014        |aw@example.com           |Adam            |West           |US      | http://NEWexample.com/aw.jpg |
 
   @DeletePlayer
   Scenario Outline:  Delete a given player by id
@@ -60,9 +63,9 @@ Feature: Manage player data via CRUD interface
 
     Examples:
       |playerid|
-      |10007   |
-      |10008   |
-      |10009   |
+      |10020   |
+      |10021   |
+      |10022   |
 
   @ValidatePlayerOnCreate
   Scenario Outline:  Validate player details

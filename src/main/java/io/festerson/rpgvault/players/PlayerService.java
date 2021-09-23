@@ -1,12 +1,19 @@
 package io.festerson.rpgvault.players;
 
+import com.generated.CountriesPort;
+import com.generated.CountriesPortService;
+import com.generated.GetCountryRequest;
+import com.generated.GetCountryResponse;
 import io.festerson.rpgvault.domain.Player;
 import io.festerson.rpgvault.exception.RpgMgrException;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import javax.xml.ws.BindingProvider;
 
 
 @Service
@@ -15,6 +22,9 @@ public class PlayerService {
 
     @Autowired
     private PlayerRepository playerRepository;
+
+    @Value( "${soap.country-service.endpoint-url}" )
+    private String webserviceEndpointUrl;
 
     public Flux<Player> getPlayers(){
         return playerRepository.findAll().onErrorResume(t -> Mono.error(handleException(t)));
@@ -33,11 +43,15 @@ public class PlayerService {
             .map(found -> {
                 player.setId(id);
                 if(player.getFirstName() != null && !player.getFirstName().isEmpty())
-                    found.setFirstName(player.getFirstName());
+                found.setFirstName(player.getFirstName());
+                if(player.getLastName() != null && !player.getLastName().isEmpty())
+                found.setLastName(player.getLastName());
+                if(player.getCountry() != null && !player.getCountry().isEmpty())
+                found.setCountry(player.getCountry());
                 if(player.getEmail() != null && !player.getEmail().isEmpty())
-                    found.setEmail(player.getEmail());
-                if(player.getImageUrl() != null && !player.getImageUrl().isEmpty())
-                    found.setImageUrl(player.getImageUrl());
+                found.setEmail(player.getEmail());
+                if(player.getImageUrl() != null)
+                found.setImageUrl(player.getImageUrl());
                 return found;
             })
             .flatMap(updatedPlayer -> playerRepository.save(updatedPlayer).thenReturn(updatedPlayer))
@@ -51,7 +65,19 @@ public class PlayerService {
     }
 
     private RpgMgrException handleException(Throwable t){
-        log.error("Exception in PlayerController:", t);
+        log.error("Exception in PlayerService:", t);
         return new RpgMgrException(t);
+    }
+
+    public Mono<GetCountryResponse> getCountryFromWebService(GetCountryRequest input) {
+        return Mono.create(sink -> getPortType().getCountryAsync(input, ReactorAsyncHandler.into(sink)));
+    }
+
+    private CountriesPort getPortType(){
+        CountriesPortService service = new CountriesPortService();
+        CountriesPort portType = service.getCountriesPortSoap11();
+        BindingProvider bp = (BindingProvider)portType;
+        bp.getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, webserviceEndpointUrl);
+        return portType;
     }
 }

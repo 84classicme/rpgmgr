@@ -85,13 +85,7 @@ public class PlayerDefinitions extends CucumberTest {
         url = "/players";
     }
 
-    @When("I request to create a new player by POSTING their first name {word} and last name {word} and email {word} and image url {word}")
-    public void createPlayer(String firstname, String lastname, String email, String imageurl){
-        player = new Player(firstname, lastname, email, imageurl);
-        url = "/players";
-    }
-
-    @When("I have new {word} {word} {word} or {word} data for a {word}")
+    @When("I have new {word} {word} {word} {word} or {word} data for a {word}")
     public void updatePlayerEmail(String firstname, String lastname, String email, String imageUrl, String id){
         player = new Player(id,firstname, lastname, email, imageUrl);
         url = "/players/" + id;
@@ -101,14 +95,14 @@ public class PlayerDefinitions extends CucumberTest {
     public void setPutUrl(){ url = "/players/" + player.getId(); }
 
     @When("an invalid {word} {word} or {word} is used in player data")
-    public void createPlayer(String firstname, String lastname, String email){
+    public void createInvalidPlayer(String firstname, String lastname, String email){
         if(firstname.equals("empty")) {firstname = "";}
         else if(firstname.equals("null")) {firstname = null;}
 
         if(lastname.equals("empty")) {lastname = "";}
         else if(lastname.equals("null")) {lastname = null;}
 
-        player = new Player(firstname, lastname, email, "https://www.example.com/my-image.jpg");
+        player = new Player(firstname, lastname, "US", email, "https://www.example.com/my-image.jpg");
     }
 
     @When("I create a new player")
@@ -119,6 +113,9 @@ public class PlayerDefinitions extends CucumberTest {
 
     @And("last name is {word}")
     public void addPlayerLastName(String lastName){ player.setLastName(lastName); }
+
+    @And("country is {word}")
+    public void addPlayerCountry(String country){ player.setCountry(country); }
 
     @And("email is {word}")
     public void addPlayerEmail(String email){ player.setEmail(email); }

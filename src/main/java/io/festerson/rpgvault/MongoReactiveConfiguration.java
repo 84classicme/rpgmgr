@@ -1,7 +1,8 @@
 package io.festerson.rpgvault;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
+
+import com.mongodb.reactivestreams.client.MongoClient;
+import com.mongodb.reactivestreams.client.MongoClients;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +30,7 @@ public class MongoReactiveConfiguration extends AbstractReactiveMongoConfigurati
     }
 
     @Override
-    public com.mongodb.reactivestreams.client.MongoClient reactiveMongoClient() {
-        return com.mongodb.reactivestreams.client.MongoClients.create(uri);
+    public MongoClient reactiveMongoClient() {
+        return MongoClients.create(uri);
     }
 }

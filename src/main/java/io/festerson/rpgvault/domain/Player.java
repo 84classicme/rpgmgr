@@ -33,6 +33,10 @@ public class Player {
     @JsonProperty("email")
     private String email;
 
+    @NotBlank
+    @JsonProperty("country")
+    private String country;
+
     @JsonProperty("img")
     private String imageUrl;
 
@@ -40,9 +44,11 @@ public class Player {
             String firstName,
             String lastName,
             String email,
+            String country,
             String imageUrl) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.country = country;
         this.email = email;
         this.imageUrl = imageUrl;
     }

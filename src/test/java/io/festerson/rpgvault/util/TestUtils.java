@@ -1,5 +1,8 @@
 package io.festerson.rpgvault.util;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.generated.GetCountryRequest;
+import com.generated.GetCountryResponse;
 import io.festerson.rpgvault.campaigns.CampaignRepository;
 import io.festerson.rpgvault.characters.CharacterRepository;
 import io.festerson.rpgvault.domain.*;
@@ -7,6 +10,7 @@ import io.festerson.rpgvault.players.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.core.publisher.Flux;
 
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -93,16 +97,17 @@ public class TestUtils {
     }
 
     public static Player buildPlayer(){
-        return buildPlayer(null,"test", "player", "me@notu.com", "http://www.imgurl");
+        return buildPlayer(null,"test", "player", "me@notu.com", "US", "http://www.imgurl");
     }
 
-    public static Player buildPlayer(String id, String firstName, String lastName, String email, String imageUrl){
+    public static Player buildPlayer(String id, String firstName, String lastName, String email, String country, String imageUrl){
         return Player
             .builder()
             .id(id)
             .firstName(firstName)
             .lastName(lastName)
             .email(email)
+            .country(country)
             .imageUrl(imageUrl)
             .build();
     }
@@ -128,21 +133,49 @@ public class TestUtils {
     }
 
     public static Flux<Player> buildPlayers(){
-        return(Flux.just(buildPlayer("10001", "Annie", "Jones", "aj@example.com", "http://example.com/aj.jpg"),
-            buildPlayer("10002","John","Johnson", "jj@example.com", "http://example.com/jj.jpg"),
-            buildPlayer("10003","David", "Davidson", "dd@example.com", "http://example.com/dd.jpg")));
+        return(Flux.just(buildPlayer("10001", "Annie", "Jones", "aj@example.com", "US","http://example.com/aj.jpg"),
+            buildPlayer("10002","John","Johnson", "jj@example.com", "US","http://example.com/jj.jpg"),
+            buildPlayer("10003","David", "Davidson", "dd@example.com", "US","http://example.com/dd.jpg")));
     }
 
     public static Flux<Player> buildPlayersToUpdate(){
-        return(Flux.just(buildPlayer("10004", "Pat", "Samples", "ps@example.com", "http://example.com/ps.jpg"),
-            buildPlayer("10005","Ben","Hur", "bh@example.com", "http://example.com/bh.jpg"),
-            buildPlayer("10006","Peaches", "Moscowitz", "pm@example.com", "http://example.com/pm.jpg")));
+        return(Flux.just(buildPlayer("10010", "Pat", "Samples", "ps@example.com", "US","http://example.com/ps.jpg"),
+            buildPlayer("10011","Ben","Hur", "bh@example.com", "US","http://example.com/bh.jpg"),
+            buildPlayer("10012","Peaches", "Moscowitz", "pm@example.com", "US","http://example.com/pm.jpg"),
+            buildPlayer("10013","Lisa", "Simpson", "ls@example.com", "US","http://example.com/ls.jpg"),
+            buildPlayer("10014","Adam", "West", "aw@example.com", "US","http://example.com/aw.jpg")));
     }
 
     public static Flux<Player> buildPlayersToDelete(){
-        return(Flux.just(buildPlayer("10007", "Johnny", "Guitar", "jg@example.com", "http://example.com/jg.jpg"),
-            buildPlayer("10008","Sam","Spade", "ss@example.com", "http://example.com/s.jpg"),
-            buildPlayer("10009","Petulia", "Frizzlefoam", "pf@example.com", "http://example.com/pf.jpg")));
+        return(Flux.just(buildPlayer("10020", "Johnny", "Guitar", "jg@example.com", "US","http://example.com/jg.jpg"),
+            buildPlayer("10021","Sam","Spade", "ss@example.com", "US","http://example.com/s.jpg"),
+            buildPlayer("10022","Petulia", "Frizzlefoam", "pf@example.com", "US","http://example.com/pf.jpg")));
     }
 
+    public static GetCountryRequest getCountryRequestFromXml(String path) throws IOException {
+        if (path == null || path.isEmpty()) path = "src/test/resources/xml/CampaignRequest.xml";
+        File file = new File(path);
+        XmlMapper xmlMapper = new XmlMapper();
+        String xml = inputStreamToString(new FileInputStream(file));
+        return xmlMapper.readValue(xml, GetCountryRequest.class);
+    }
+
+    public static GetCountryResponse getCountryResponseFromXml(String path) throws IOException {
+        if (path == null || path.isEmpty()) path = "src/test/resources/xml/CountryResponse.xml";
+        File file = new File(path);
+        XmlMapper xmlMapper = new XmlMapper();
+        String xml = inputStreamToString(new FileInputStream(file));
+        return xmlMapper.readValue(xml, GetCountryResponse.class);
+    }
+
+    private static String inputStreamToString(InputStream is) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        String line;
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        while ((line = br.readLine()) != null) {
+            sb.append(line);
+        }
+        br.close();
+        return sb.toString();
+    }
 }

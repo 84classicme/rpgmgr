@@ -76,7 +76,7 @@ public class CharacterService {
     }
 
     private RpgMgrException handleException(Throwable t){
-        log.error("Exception in PlayerController:", t);
+        log.error("Exception in CharacterService:", t);
         return new RpgMgrException(t);
     }
 }
