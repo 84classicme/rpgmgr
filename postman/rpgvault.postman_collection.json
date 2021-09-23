@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4a099a04-0c20-4140-8e55-413bf98a90c0",
+		"_postman_id": "c002c59a-0d1d-4788-a93a-3dfe2ed7dbb5",
 		"name": "rpgvault",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -11,7 +11,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "22117f9c-4217-44d0-845d-b8c33ffc62c6",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
 							"postman.setEnvironmentVariable(\"campaign-id\", jsonData.id);"
@@ -54,7 +53,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "7e18c3a1-28f6-447c-b736-b8c4a23b45aa",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
 							"postman.setEnvironmentVariable(\"character-id\", jsonData.id);"
@@ -97,7 +95,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "af6270bf-8e5f-4a99-adc8-793e79fd7b71",
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
 							"postman.setEnvironmentVariable(\"player-id\", jsonData.id);"
@@ -118,7 +115,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"name\":\"Steve Bishop\",\n\"email\":\"sb@notu.com\",\n\"img\":\"\"\n}"
+					"raw": "{\n\"fistname\":\"Steve\",\n\"lastname\":\"Bishop\",\n\"country\":\"US\",\n\"email\":\"sb@notu.com\",\n\"img\":\"\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/players",
@@ -743,7 +740,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"{{player-id}}\",\n    \"name\": \"Mary Jane Zlotnik\",\n    \"email\": \"mjz@notyou.com\",\n    \"img\": \"\"\n}"
+					"raw": "{\n    \"id\": \"{{player-id}}\",\n    \"fistname\":\"Mary Jane\",\n    \"lastname\":\"Zlotnik\",\n    \"country\":\"US\",\n    \"email\":\"sb@notu.com\",\n    \"img\":\"\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/players/{{player-id}}",
@@ -774,7 +771,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"{{player-id}}\",\n    \"name\": \"Mary Jane Zlotnik\",\n    \"email\": \"mjz@notyou.com\",\n    \"img\": \"\"\n}"
+					"raw": "{\n    \"id\": \"{{player-id}}\",\n    \"fistname\":\"Mary Jane\",\n    \"lastname\":\"Zlotnik\",\n    \"country\":\"US\",\n    \"email\":\"sb@notu.com\",\n    \"img\":\"\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/players/123",
@@ -805,7 +802,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": 123,\n    \"name\": \"Mary Jane Zlotnik\",\n    \"email\": \"mjz@notyou.com\",\n    \"img\": \"\"\n}"
+					"raw": "{\n    \"id\": 123,\n    \"fistname\":\"Mary Jane\",\n    \"lastname\":\"Zlotnik\",\n    \"country\":\"US\",\n    \"email\": \"mjz@notyou.com\",\n    \"img\": \"\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/players/{{player-id}}",
@@ -836,7 +833,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": 123,\n    \"name\": \"Mary Jane Zlotnik\",\n    \"email\": \"mjz@notyou.com\",\n    \"img\": \"\"\n}"
+					"raw": "{\n    \"id\": 123,\n    \"fistname\":\"Mary Jane\",\n    \"lastname\":\"Zlotnik\",\n    \"country\":\"US\",\n    \"email\": \"mjz@notyou.com\",\n    \"img\": \"\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/players/123",
@@ -1044,7 +1041,6 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "3b54e882-1919-4c6b-a8dd-5f0c9594dbf6",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1054,7 +1050,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "0a6a13e6-141b-4619-b776-00e413ad3ce1",
 				"type": "text/javascript",
 				"exec": [
 					""
