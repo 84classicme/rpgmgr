@@ -24,20 +24,26 @@ Feature: Manage player data via CRUD interface
 
   @CreatePlayer
   Scenario Outline:  Create new players
-    When I request to create a new player by POSTING their first name <firstname> and last name <lastname> and email <email> and image url <imageurl>
-    Then the system creates the record and responds with http status created and player first name <firstname> and last name <lastname> and email <email> and image url <imageurl>
+    When I create a new player
+    * first name is <firstname>
+    * last name is <lastname>
+    * email is <email>
+    * image url is <imageurl>
+    And I POST a request into the system
+    Then the system creates the record and responds with http status code 201 and returns the new player with a unique id
 
     Examples:
       |firstname      |lastname     |email                 | imageurl                  |
-      |Donnie         |Phillips    |aj@example.com        | http://example.com/dp.jpg |
-      |Earl           |Monroe      |jj@example.com        | http://example.com/em.jpg |
-      |Franklin       |Freewheel   |dd@example.com        | http://example.com/ff.jpg |
+      |Donnie         |Phillips    |dp@example.com        | http://example.com/dp.jpg |
+      |Earl           |Monroe      |em@example.com        | http://example.com/em.jpg |
+      |Franklin       |Freewheel   |ff@example.com        | http://example.com/ff.jpg |
 
   @UpdatePlayer
   Scenario Outline:  Update details for given player by id
     Given player data exists that needs to be updated
-    When I update the email of player <firstname> <lastname> to <newemail> by using their <playerid> in a PUT url
-    Then the system updates the record and responds with http status ok and player id <playerid> and first name <firstname> and last name <lastname> and email <newemail> and image url <imageurl>
+    When I have new <firstname> <lastname> <newemail> or <imageurl> data for a <playerid>
+    And I PUT a request into the system
+    Then the system updates the record and responds with http status code 200 and returns the updated player
 
     Examples:
       |playerid     |newemail                 |firstname       |lastname       | imageurl                  |
@@ -58,18 +64,34 @@ Feature: Manage player data via CRUD interface
       |10008   |
       |10009   |
 
-  @ValidatePlayer
+  @ValidatePlayerOnCreate
   Scenario Outline:  Validate player details
     When an invalid <firstname> <lastname> or <email> is used in player data
-    Then the response returns http status bad request and include the message <message> about the validation errors when creating a player
-    And the response returns http status bad request and include the message <message> about the validation errors when updating a player
+    And I POST a request into the system
+    Then the system responds with http status code 400 and a <message> about each invalid field in the POST
 
     Examples:
-      |firstname |lastname |email           | message                                                    |
-      |empty     |Jones    |aj@example.com  | 'firstName must not be blank.'                             |
-      |John      |empty    |jj@example.com  | 'lastName must not be blank.'                              |
-      |David     |Davidson |example.com     | 'email must be a well-formed email address.'               |
+      |firstname |lastname |email           | message                                                                                              |
+      |empty     |Jones    |aj@example.com  | 'firstName must not be blank.'                                                                       |
+      |John      |empty    |jj@example.com  | 'lastName must not be blank.'                                                                        |
+      |David     |Davidson |example.com     | 'email must be a well-formed email address.'                                                         |
       |empty     |empty    |example.com     | 'firstName must not be blank.lastName must not be blank.email must be a well-formed email address.'  |
-      |null      |Jones    |aj@example.com  | 'firstName must not be blank.'                             |
-      |John      |null     |jj@example.com  | 'lastName must not be blank.'                              |
+      |null      |Jones    |aj@example.com  | 'firstName must not be blank.'                                                                       |
+      |John      |null     |jj@example.com  | 'lastName must not be blank.'                                                                        |
+      |null      |null     |example.com     | 'firstName must not be blank.lastName must not be blank.email must be a well-formed email address.'  |
+
+  @ValidatePlayerOnUpdate
+  Scenario Outline:  Validate player details
+    When an invalid <firstname> <lastname> or <email> is used in player data
+    And I PUT a request into the system
+    Then the system responds with http status code 400 and a <message> about each invalid field in the PUT
+
+    Examples:
+      |firstname |lastname |email           | message                                                                                              |
+      |empty     |Jones    |aj@example.com  | 'firstName must not be blank.'                                                                       |
+      |John      |empty    |jj@example.com  | 'lastName must not be blank.'                                                                        |
+      |David     |Davidson |example.com     | 'email must be a well-formed email address.'                                                         |
+      |empty     |empty    |example.com     | 'firstName must not be blank.lastName must not be blank.email must be a well-formed email address.'  |
+      |null      |Jones    |aj@example.com  | 'firstName must not be blank.'                                                                       |
+      |John      |null     |jj@example.com  | 'lastName must not be blank.'                                                                        |
       |null      |null     |example.com     | 'firstName must not be blank.lastName must not be blank.email must be a well-formed email address.'  |

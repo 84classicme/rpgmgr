@@ -1,6 +1,5 @@
 package io.festerson.rpgvault.characters;
 
-import io.festerson.rpgvault.domain.Campaign;
 import io.festerson.rpgvault.domain.PlayerCharacter;
 import io.festerson.rpgvault.exception.RpgMgrException;
 import io.festerson.rpgvault.util.TestUtils;

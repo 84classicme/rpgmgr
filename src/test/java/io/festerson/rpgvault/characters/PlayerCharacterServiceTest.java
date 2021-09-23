@@ -1,7 +1,6 @@
 package io.festerson.rpgvault.characters;
 
 import com.mongodb.MongoClientException;
-import io.festerson.rpgvault.domain.Campaign;
 import io.festerson.rpgvault.domain.PlayerCharacter;
 import io.festerson.rpgvault.exception.RpgMgrException;
 import io.festerson.rpgvault.util.TestUtils;

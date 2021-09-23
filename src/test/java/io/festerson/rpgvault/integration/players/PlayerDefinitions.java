@@ -18,7 +18,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +48,6 @@ public class PlayerDefinitions extends CucumberTest {
 
     @Before
     public void setUp() {
-        player = TestUtils.buildPlayer();
         playerFlux = TestUtils.buildPlayers();
         updatedFlux = TestUtils.buildPlayersToUpdate();
         deletedFlux = TestUtils.buildPlayersToDelete();
@@ -93,11 +91,14 @@ public class PlayerDefinitions extends CucumberTest {
         url = "/players";
     }
 
-    @When("I update the email of player {word} {word} to {word} by using their {word} in a PUT url")
-    public void updatePlayerEmail(String firstname, String lastname, String email,  String id){
-        player = new Player(id,firstname, lastname, email, null);
+    @When("I have new {word} {word} {word} or {word} data for a {word}")
+    public void updatePlayerEmail(String firstname, String lastname, String email, String imageUrl, String id){
+        player = new Player(id,firstname, lastname, email, imageUrl);
         url = "/players/" + id;
     }
+
+    @And("I PUT a request into the system")
+    public void setPutUrl(){ url = "/players/" + player.getId(); }
 
     @When("an invalid {word} {word} or {word} is used in player data")
     public void createPlayer(String firstname, String lastname, String email){
@@ -108,12 +109,31 @@ public class PlayerDefinitions extends CucumberTest {
         else if(lastname.equals("null")) {lastname = null;}
 
         player = new Player(firstname, lastname, email, "https://www.example.com/my-image.jpg");
-        url = "/players";
     }
+
+    @When("I create a new player")
+    public void initPlayer(){ player = new Player(); }
+
+    @And("first name is {word}")
+    public void addPlayerFirstName(String fristName){ player.setFirstName(fristName); }
+
+    @And("last name is {word}")
+    public void addPlayerLastName(String lastName){ player.setLastName(lastName); }
+
+    @And("email is {word}")
+    public void addPlayerEmail(String email){ player.setEmail(email); }
+
+    @And("image url is {word}")
+    public void addPlayerImageUrl(String imageUrl){
+        player.setImageUrl(imageUrl);
+    }
+
+    @And("I POST a request into the system")
+    public void setPostUrl(){ url = "/players"; }
 
     @Then("the response will return http status ok and player first name {word} and last name {word} and email {word} and image url {word}")
     public void verifyPlayer(String firstname, String lastname, String email, String imageurl){
-        webTestClient
+        this.webTestClient
             .get().uri(url)
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
@@ -132,16 +152,16 @@ public class PlayerDefinitions extends CucumberTest {
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk()
-            .expectBodyList(Player.class).hasSize(players.size())//.contains(players.get(0), players.get(1), players.get(2))
+            .expectBodyList(Player.class).hasSize(players.size())
             .consumeWith(response -> {
                List<Player> list = response.getResponseBody();
-               Collections.sort(list, new Comparator<Player>() {
+               list.sort(new Comparator<Player>() {
                    @Override
                    public int compare(Player p1, Player p2) {
                        return p1.getFirstName().compareTo(p2.getFirstName());
                    }
                });
-                Collections.sort(players, new Comparator<Player>() {
+                players.sort(new Comparator<Player>() {
                     @Override
                     public int compare(Player p1, Player p2) {
                         return p1.getFirstName().compareTo(p2.getFirstName());
@@ -157,8 +177,8 @@ public class PlayerDefinitions extends CucumberTest {
             });
     }
 
-    @Then("the system creates the record and responds with http status created and player first name {word} and last name {word} and email {word} and image url {word}")
-    public void verifyNewPlayer(String firstname, String lastname, String email, String imageurl){
+    @Then("the system creates the record and responds with http status code 201 and returns the new player with a unique id")
+    public void verifyNewPlayer(){
         webTestClient
             .post().uri(url)
             .contentType(MediaType.APPLICATION_JSON)
@@ -169,22 +189,24 @@ public class PlayerDefinitions extends CucumberTest {
             .expectBody(Player.class)
             .consumeWith(response -> {
                 Player newplayer =  response.getResponseBody();
+                Assertions.assertNotNull(newplayer);
                 Assertions.assertNotNull(newplayer.getId());
-                Assertions.assertEquals(firstname, newplayer.getFirstName());
-                Assertions.assertEquals(lastname, newplayer.getLastName());
-                Assertions.assertEquals(email, newplayer.getEmail());
-                Assertions.assertEquals(imageurl, newplayer.getImageUrl());
+                Assertions.assertEquals(player.getFirstName(), newplayer.getFirstName());
+                Assertions.assertEquals(player.getLastName(), newplayer.getLastName());
+                Assertions.assertEquals(player.getEmail(), newplayer.getEmail());
+                Assertions.assertEquals(player.getImageUrl(), newplayer.getImageUrl());
                 Player found = repository.findById(newplayer.getId()).block();
-                Assertions.assertEquals(firstname, found.getFirstName());
-                Assertions.assertEquals(lastname, found.getLastName());
-                Assertions.assertEquals(email, found.getEmail());
-                Assertions.assertEquals(imageurl, found.getImageUrl());
+                Assertions.assertNotNull(found);
+                Assertions.assertEquals(player.getFirstName(), found.getFirstName());
+                Assertions.assertEquals(player.getLastName(), found.getLastName());
+                Assertions.assertEquals(player.getEmail(), found.getEmail());
+                Assertions.assertEquals(player.getImageUrl(), found.getImageUrl());
                 repository.delete(newplayer).block();
             });
     }
 
-    @Then("the system updates the record and responds with http status ok and player id {word} and first name {word} and last name {word} and email {word} and image url {word}")
-    public void verifyUpdatedPlayer(String id, String firstname, String lastname, String newemail, String imageurl){
+    @Then("the system updates the record and responds with http status code 200 and returns the updated player")
+    public void verifyUpdatedPlayer(){
         webTestClient
             .put().uri(url)
             .contentType(MediaType.APPLICATION_JSON)
@@ -195,13 +217,18 @@ public class PlayerDefinitions extends CucumberTest {
             .expectBody(Player.class)
             .consumeWith(response -> {
                 Player updated =  response.getResponseBody();
+                Assertions.assertNotNull(updated);
                 Assertions.assertNotNull(player.getId());
-                Assertions.assertEquals(firstname, updated.getFirstName());
-                Assertions.assertEquals(lastname, updated.getLastName());
-                Assertions.assertEquals(newemail, updated.getEmail());
-                Assertions.assertEquals(imageurl, updated.getImageUrl());
+                Assertions.assertEquals(player.getFirstName(), updated.getFirstName());
+                Assertions.assertEquals(player.getLastName(), updated.getLastName());
+                Assertions.assertEquals(player.getEmail(), updated.getEmail());
+                Assertions.assertEquals(player.getImageUrl(), updated.getImageUrl());
                 Player found = repository.findById(updated.getId()).block();
-                Assertions.assertEquals(newemail, found.getEmail());
+                Assertions.assertNotNull(found);
+                Assertions.assertEquals(player.getFirstName(), found.getFirstName());
+                Assertions.assertEquals(player.getLastName(), found.getLastName());
+                Assertions.assertEquals(player.getEmail(), found.getEmail());
+                Assertions.assertEquals(player.getImageUrl(), found.getImageUrl());
             });
     }
 
@@ -223,7 +250,7 @@ public class PlayerDefinitions extends CucumberTest {
             .expectStatus().isNotFound();
     }
 
-    @Then("the response returns http status bad request and include the message {string} about the validation errors when creating a player")
+    @Then("the system responds with http status code 400 and a {string} about each invalid field in the POST")
     public void verifyCreatedPlayer(String message){
         webTestClient
             .post().uri(url)
@@ -239,7 +266,7 @@ public class PlayerDefinitions extends CucumberTest {
             });
     }
 
-    @And("the response returns http status bad request and include the message {string} about the validation errors when updating a player")
+    @And("the system responds with http status code 400 and a {string} about each invalid field in the PUT")
     public void verifyUpdatedPlayer(String message){
         webTestClient
             .put().uri(url)

@@ -2,7 +2,6 @@ package io.festerson.rpgvault.campaigns;
 
 import com.mongodb.MongoClientException;
 import io.festerson.rpgvault.domain.Campaign;
-import io.festerson.rpgvault.domain.Player;
 import io.festerson.rpgvault.exception.RpgMgrException;
 import io.festerson.rpgvault.util.TestUtils;
 import org.assertj.core.api.Assertions;
