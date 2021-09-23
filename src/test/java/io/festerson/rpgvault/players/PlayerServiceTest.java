@@ -1,8 +1,6 @@
 package io.festerson.rpgvault.players;
 
 import com.mongodb.MongoClientException;
-import com.mongodb.MongoException;
-import com.mongodb.MongoWriteException;
 import io.festerson.rpgvault.domain.Player;
 import io.festerson.rpgvault.exception.RpgMgrException;
 import io.festerson.rpgvault.util.TestUtils;
@@ -13,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpHeaders;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
