@@ -57,3 +57,19 @@ Feature: Manage player data via CRUD interface
       |10007   |
       |10008   |
       |10009   |
+
+  @ValidatePlayer
+  Scenario Outline:  Validate player details
+    When an invalid <firstname> <lastname> or <email> is used in player data
+    Then the response returns http status bad request and include the message <message> about the validation errors when creating a player
+    And the response returns http status bad request and include the message <message> about the validation errors when updating a player
+
+    Examples:
+      |firstname |lastname |email           | message                                                    |
+      |empty     |Jones    |aj@example.com  | 'firstName must not be blank.'                             |
+      |John      |empty    |jj@example.com  | 'lastName must not be blank.'                              |
+      |David     |Davidson |example.com     | 'email must be a well-formed email address.'               |
+      |empty     |empty    |example.com     | 'firstName must not be blank.lastName must not be blank.email must be a well-formed email address.'  |
+      |null      |Jones    |aj@example.com  | 'firstName must not be blank.'                             |
+      |John      |null     |jj@example.com  | 'lastName must not be blank.'                              |
+      |null      |null     |example.com     | 'firstName must not be blank.lastName must not be blank.email must be a well-formed email address.'  |

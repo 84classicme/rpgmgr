@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @CommonsLog
+@Component
 @Order(-2)
 public class RpgVaultExceptionHandler extends AbstractErrorWebExceptionHandler {
 
@@ -49,7 +50,7 @@ public class RpgVaultExceptionHandler extends AbstractErrorWebExceptionHandler {
         if(errorPropertiesMap.containsKey("errors")) {
             StringBuilder errorMessages = new StringBuilder();
             List<FieldError> fieldErrors = (List) errorPropertiesMap.get("errors");
-            fieldErrors.forEach(e -> errorMessages.append(e.getDefaultMessage() + " "));
+            fieldErrors.forEach(e -> errorMessages.append(e.getField() + " " + e.getDefaultMessage() + "."));
             errorPropertiesMap.remove("errors");
             log.info("Adding validation messages.");
             errorPropertiesMap.replace("message", errorMessages.toString());

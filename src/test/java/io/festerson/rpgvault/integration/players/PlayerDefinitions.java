@@ -99,6 +99,18 @@ public class PlayerDefinitions extends CucumberTest {
         url = "/players/" + id;
     }
 
+    @When("an invalid {word} {word} or {word} is used in player data")
+    public void createPlayer(String firstname, String lastname, String email){
+        if(firstname.equals("empty")) {firstname = "";}
+        else if(firstname.equals("null")) {firstname = null;}
+
+        if(lastname.equals("empty")) {lastname = "";}
+        else if(lastname.equals("null")) {lastname = null;}
+
+        player = new Player(firstname, lastname, email, "https://www.example.com/my-image.jpg");
+        url = "/players";
+    }
+
     @Then("the response will return http status ok and player first name {word} and last name {word} and email {word} and image url {word}")
     public void verifyPlayer(String firstname, String lastname, String email, String imageurl){
         webTestClient
@@ -209,5 +221,37 @@ public class PlayerDefinitions extends CucumberTest {
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isNotFound();
+    }
+
+    @Then("the response returns http status bad request and include the message {string} about the validation errors when creating a player")
+    public void verifyCreatedPlayer(String message){
+        webTestClient
+            .post().uri(url)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(Mono.just(player), Player.class)
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().is4xxClientError()
+            .expectBody()
+            .consumeWith(response -> {
+                byte[] messageBytes =  response.getResponseBody();
+                String errorMessage = new String(messageBytes);
+            });
+    }
+
+    @And("the response returns http status bad request and include the message {string} about the validation errors when updating a player")
+    public void verifyUpdatedPlayer(String message){
+        webTestClient
+            .put().uri(url)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(Mono.just(player), Player.class)
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().is4xxClientError()
+            .expectBody()
+            .consumeWith(response -> {
+                byte[] messageBytes =  response.getResponseBody();
+                String errorMessage = new String(messageBytes);
+            });
     }
 }
