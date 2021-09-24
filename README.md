@@ -13,9 +13,14 @@ The code is packaged by feature/domain and not by layer/responsibility.
  * Exceptions are shared code, which can be placed in their own packages. See the two exception and domain packages, for example.
 
 ## Highlights
-Reactive programming examples for happy path and exception handling.
+Reactive programming examples for happy path and exception handling of controller->service->repository flows.
 
-Reactive MongoDB repositories for asynchronous database calls. No more blocking threads! 
+Reactive webclients for SOAP and REST endpoints.
+ * Retry and error handling for timeouts and separte flows for handling client and server errors.
+ * Tests use wiremock to simulate good and faulty responses from external services.
+ * Plugin ingests SOAP WSDL and generates asynchronous soap client and related code.
+ 
+Reactive data repositories for asynchronous database calls. No more blocking threads! 
 
 Custom exception handling classes streamline responses to the client for easy communication of validation errors.
 
