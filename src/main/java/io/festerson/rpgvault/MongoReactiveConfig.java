@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 
 @Configuration
 @EnableReactiveMongoRepositories
-public class MongoReactiveConfiguration extends AbstractReactiveMongoConfiguration {
+public class MongoReactiveConfig extends AbstractReactiveMongoConfiguration {
 
     @Value(value = "${spring.data.mongodb.uri}")
     private String uri;

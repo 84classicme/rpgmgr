@@ -1,4 +1,4 @@
-package io.festerson.rpgvault.security;
+package io.festerson.rpgvault;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.config.CorsRegistry;

@@ -6,6 +6,45 @@
 	},
 	"item": [
 		{
+			"name": "Get Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonResponse = pm.response.json();\r",
+							"pm.environment.set(\"auth_token\", jsonResponse.token);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"admin\",\r\n    \"password\":\"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/auth",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Create Campaigns",
 			"event": [
 				{
@@ -20,12 +59,27 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
 						"type": "text"
 					}
 				],
@@ -34,12 +88,10 @@
 					"raw": "{\n\"name\":\"Mondy Night Tomb of Horrors\",\n\"start\":\"2017-01-12\",\n\"end\":\"\",\n\"players\":[\"5e078469fc8fb856ec68fd99\",\"5e0784c0fc8fb856ec68fd9d\", \"5e078444fc8fb856ec68fd98\", \"5e078528fc8fb856ec68fda1\"],\n\"characters\":[\"5e0786e9fc8fb856ec68fda5\",\"5e0786a5fc8fb856ec68fda4\",\"5e078656fc8fb856ec68fda3\",\"5e0785fffc8fb856ec68fda2\"],\n\"npcs\":[],\n\"monsters\":[],\n\"dm\":\"5e07849bfc8fb856ec68fd9b\",\n\"description\":\"Running the classic every other Monday night.\",\n\"img\":\"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/campaigns",
-					"protocol": "http",
+					"raw": "{{url}}/campaigns",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"campaigns"
 					]
@@ -62,6 +114,16 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -69,6 +131,12 @@
 						"name": "Content-Type",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -76,12 +144,10 @@
 					"raw": "{\n\"name\":\"Frey Neldergard\",\n\"race\":\"HUMAN\",\n\"class\":\"BARD\",\n\"level\":1,\n\"str\":10,\n\"dex\":18,\n\"con\":12,\n\"int\":16,\n\"wis\":12,\n\"cha\":10,\n\"ac\":13,\n\"hp\":10,\n\"cr\":0,\n\"type\":\"PC\",\n\"player\":\"5e078469fc8fb856ec68fd99\",\n\"img\":\"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/characters",
-					"protocol": "http",
+					"raw": "{{url}}/characters",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"characters"
 					]
@@ -104,6 +170,16 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -111,6 +187,12 @@
 						"name": "Content-Type",
 						"value": "application/json",
 						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -118,12 +200,10 @@
 					"raw": "{\n\"fistname\":\"Steve\",\n\"lastname\":\"Bishop\",\n\"country\":\"US\",\n\"email\":\"sb@notu.com\",\n\"img\":\"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/players",
-					"protocol": "http",
+					"raw": "{{url}}/players",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"players"
 					]
@@ -132,11 +212,21 @@
 			"response": []
 		},
 		{
-			"name": "Get Campaigns",
+			"name": "Get Campaign",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
@@ -151,12 +241,100 @@
 					"raw": "{\n\"name\":\"ThunkStonebane\",\n\"crace\":\"HALF_ORC\",\n\"cclass\":\"RANGER\",\n\"level\":1,\n\"strength\":11,\n\"dexterity\":14,\n\"constituion\":15,\n\"intelligence\":12,\n\"wisdom\":15,\n\"charisma\":10,\n\"ac\":13,\n\"hp\":10,\n\"cr\":0,\n\"ctype\":\"PC\",\n\"_class\":\"io.festerson.npcvault.domain.Character\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/campaigns",
-					"protocol": "http",
+					"raw": "{{url}}/campaigns/{{campaign-id}}",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
+					"path": [
+						"campaigns",
+						"{{campaign-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Campaign -- bad id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"name\":\"ThunkStonebane\",\n\"crace\":\"HALF_ORC\",\n\"cclass\":\"RANGER\",\n\"level\":1,\n\"strength\":11,\n\"dexterity\":14,\n\"constituion\":15,\n\"intelligence\":12,\n\"wisdom\":15,\n\"charisma\":10,\n\"ac\":13,\n\"hp\":10,\n\"cr\":0,\n\"ctype\":\"PC\",\n\"_class\":\"io.festerson.npcvault.domain.Character\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/campaigns/123",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"campaigns",
+						"123"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Campaigns",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"name\":\"ThunkStonebane\",\n\"crace\":\"HALF_ORC\",\n\"cclass\":\"RANGER\",\n\"level\":1,\n\"strength\":11,\n\"dexterity\":14,\n\"constituion\":15,\n\"intelligence\":12,\n\"wisdom\":15,\n\"charisma\":10,\n\"ac\":13,\n\"hp\":10,\n\"cr\":0,\n\"ctype\":\"PC\",\n\"_class\":\"io.festerson.npcvault.domain.Character\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/campaigns",
+					"host": [
+						"{{url}}"
+					],
 					"path": [
 						"campaigns"
 					]
@@ -170,6 +348,16 @@
 				"disableBodyPruning": true
 			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
@@ -184,12 +372,10 @@
 					"raw": "{\n\"name\":\"ThunkStonebane\",\n\"crace\":\"HALF_ORC\",\n\"cclass\":\"RANGER\",\n\"level\":1,\n\"strength\":11,\n\"dexterity\":14,\n\"constituion\":15,\n\"intelligence\":12,\n\"wisdom\":15,\n\"charisma\":10,\n\"ac\":13,\n\"hp\":10,\n\"cr\":0,\n\"ctype\":\"PC\",\n\"_class\":\"io.festerson.npcvault.domain.Character\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/campaigns?player={{player-id}}",
-					"protocol": "http",
+					"raw": "{{url}}/campaigns?player={{player-id}}",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"campaigns"
 					],
@@ -209,6 +395,16 @@
 				"disableBodyPruning": true
 			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
@@ -223,12 +419,10 @@
 					"raw": "{\n\"name\":\"ThunkStonebane\",\n\"crace\":\"HALF_ORC\",\n\"cclass\":\"RANGER\",\n\"level\":1,\n\"strength\":11,\n\"dexterity\":14,\n\"constituion\":15,\n\"intelligence\":12,\n\"wisdom\":15,\n\"charisma\":10,\n\"ac\":13,\n\"hp\":10,\n\"cr\":0,\n\"ctype\":\"PC\",\n\"_class\":\"io.festerson.npcvault.domain.Character\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/campaigns?player=123",
-					"protocol": "http",
+					"raw": "{{url}}/campaigns?player=123",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"campaigns"
 					],
@@ -245,15 +439,23 @@
 		{
 			"name": "Get Characters",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/characters",
-					"protocol": "http",
+					"raw": "{{url}}/characters",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"characters"
 					]
@@ -264,15 +466,23 @@
 		{
 			"name": "Get Characters for Player",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/characters?player={{player-id}}",
-					"protocol": "http",
+					"raw": "{{url}}/characters?player={{player-id}}",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"characters"
 					],
@@ -289,15 +499,23 @@
 		{
 			"name": "Get Characters for Player -- bad id",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/characters?player=123",
-					"protocol": "http",
+					"raw": "{{url}}/characters?player=123",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"characters"
 					],
@@ -312,104 +530,25 @@
 			"response": []
 		},
 		{
-			"name": "Get Players",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/players",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"players"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Campaign",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\"name\":\"ThunkStonebane\",\n\"crace\":\"HALF_ORC\",\n\"cclass\":\"RANGER\",\n\"level\":1,\n\"strength\":11,\n\"dexterity\":14,\n\"constituion\":15,\n\"intelligence\":12,\n\"wisdom\":15,\n\"charisma\":10,\n\"ac\":13,\n\"hp\":10,\n\"cr\":0,\n\"ctype\":\"PC\",\n\"_class\":\"io.festerson.npcvault.domain.Character\"\n}"
-				},
-				"url": {
-					"raw": "http://localhost:8080/campaigns/{{campaign-id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"campaigns",
-						"{{campaign-id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Campaign -- bad id",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\"name\":\"ThunkStonebane\",\n\"crace\":\"HALF_ORC\",\n\"cclass\":\"RANGER\",\n\"level\":1,\n\"strength\":11,\n\"dexterity\":14,\n\"constituion\":15,\n\"intelligence\":12,\n\"wisdom\":15,\n\"charisma\":10,\n\"ac\":13,\n\"hp\":10,\n\"cr\":0,\n\"ctype\":\"PC\",\n\"_class\":\"io.festerson.npcvault.domain.Character\"\n}"
-				},
-				"url": {
-					"raw": "http://localhost:8080/campaigns/123",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"campaigns",
-						"123"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Get Character",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/characters/{{character-id}}",
-					"protocol": "http",
+					"raw": "{{url}}/characters/{{character-id}}",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"characters",
 						"{{character-id}}"
@@ -421,15 +560,23 @@
 		{
 			"name": "Get Character -- bad id",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/characters/123",
-					"protocol": "http",
+					"raw": "{{url}}/characters/123",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"characters",
 						"123"
@@ -441,15 +588,23 @@
 		{
 			"name": "Get Player",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/players/{{player-id}}",
-					"protocol": "http",
+					"raw": "{{url}}/players/{{player-id}}",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"players",
 						"{{player-id}}"
@@ -459,17 +614,52 @@
 			"response": []
 		},
 		{
-			"name": "Get Player -- bad id",
+			"name": "Get Players",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/players/123",
-					"protocol": "http",
+					"raw": "{{url}}/players",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
+					"path": [
+						"players"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Player -- bad id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/players/123",
+					"host": [
+						"{{url}}"
+					],
 					"path": [
 						"players",
 						"123"
@@ -481,6 +671,16 @@
 		{
 			"name": "Update Campaign",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -495,12 +695,10 @@
 					"raw": "{\n\"id\": \"{{campaign-id}}\",\n\"name\":\"Saturday Hoard of the Dragon Queen\",\n\"start\":\"2019-12-28\",\n\"end\":\"\",\n\"players\":[\"5e06bb55c3a44b0e74ee70a4\",\"5e06bb86c3a44b0e74ee70a5\"],\n\"characters\":[\"5e06bd2cc3a44b0e74ee70a6\",\"5e06bf96c3a44b0e74ee70a7\"],\n\"npcs\":[],\n\"monsters\":[],\n\"dm\":\"5e06bb16c3a44b0e74ee70a3\",\n\"description\":\"Homebrew of HotDQ. Runs every Saturday.\",\n\"img\":\"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/campaigns/{{campaign-id}}",
-					"protocol": "http",
+					"raw": "{{url}}/campaigns/{{campaign-id}}",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"campaigns",
 						"{{campaign-id}}"
@@ -512,6 +710,16 @@
 		{
 			"name": "Update Campaign -- bad json id",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -526,12 +734,10 @@
 					"raw": "{\n\"id\": \"5e06bfccc3\",\n\"name\":\"Saturday Hoard of the Dragon Queen\",\n\"start\":\"2019-12-28\",\n\"end\":\"\",\n\"players\":[\"5e06bb55c3a44b0e74ee70a4\",\"5e06bb86c3a44b0e74ee70a5\"],\n\"characters\":[\"5e06bd2cc3a44b0e74ee70a6\",\"5e06bf96c3a44b0e74ee70a7\"],\n\"npcs\":[],\n\"monsters\":[],\n\"dm\":\"5e06bb16c3a44b0e74ee70a3\",\n\"description\":\"Homebrew of HotDQ. Runs every Saturday.\",\n\"img\":\"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/campaigns/{{campaign-id}}",
-					"protocol": "http",
+					"raw": "{{url}}/campaigns/{{campaign-id}}",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"campaigns",
 						"{{campaign-id}}"
@@ -543,6 +749,16 @@
 		{
 			"name": "Update Campaign -- bad ids",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -557,12 +773,10 @@
 					"raw": "{\n\"id\": \"5e06bfccc3a44b0e74ee7\",\n\"name\":\"Saturday Hoard of the Dragon Queen\",\n\"start\":\"2019-12-28\",\n\"end\":\"\",\n\"players\":[\"5e06bb55c3a44b0e74ee70a4\",\"5e06bb86c3a44b0e74ee70a5\"],\n\"characters\":[\"5e06bd2cc3a44b0e74ee70a6\",\"5e06bf96c3a44b0e74ee70a7\"],\n\"npcs\":[],\n\"monsters\":[],\n\"dm\":\"5e06bb16c3a44b0e74ee70a3\",\n\"description\":\"Homebrew of HotDQ. Runs every Saturday.\",\n\"img\":\"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/campaigns/5e06bfccc3a44b0e7",
-					"protocol": "http",
+					"raw": "{{url}}/campaigns/5e06bfccc3a44b0e7",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"campaigns",
 						"5e06bfccc3a44b0e7"
@@ -574,6 +788,16 @@
 		{
 			"name": "Update Campaign -- bad path id",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -588,12 +812,10 @@
 					"raw": "{\n    \"id\": \"{{campaign-id}}\",\n    \"name\": \"Saturday Hoard of the Dragon Queen\",\n    \"start\": \"2019-12-28\",\n    \"end\": \"\",\n    \"players\": [\n        \"5e06bb55c3a44b0e74ee70a4\",\n        \"5e06bb86c3a44b0e74ee70a5\"\n    ],\n    \"characters\": [\n        \"5e06bd2cc3a44b0e74ee70a6\",\n        \"5e06bf96c3a44b0e74ee70a7\"\n    ],\n    \"npcs\": [],\n    \"monsters\": [],\n    \"dm\": \"5e06bb16c3a44b0e74ee70a3\",\n    \"description\": \"Homebrew of HotDQ. Runs every Saturday.\",\n    \"img\": \"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/campaigns/5e06bfccc3a44b0",
-					"protocol": "http",
+					"raw": "{{url}}/campaigns/5e06bfccc3a44b0",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"campaigns",
 						"5e06bfccc3a44b0"
@@ -605,6 +827,16 @@
 		{
 			"name": "Update Character",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -619,12 +851,10 @@
 					"raw": "{\n    \"id\": \"{{character-id}}\",\n    \"constituion\": 14,\n    \"name\": \"Thunk Stonebane\",\n    \"race\": \"HALF_ORC\",\n    \"class\": \"RANGER\",\n    \"level\": 2,\n    \"str\": 15,\n    \"dex\": 11,\n    \"con\": 14,\n    \"int\": 12,\n    \"wis\": 15,\n    \"cha\": 10,\n    \"ac\": 13,\n    \"hp\": 10,\n    \"cr\": 0,\n    \"type\": \"PC\",\n    \"img\": \"\",\n    \"player\": \"5e06bb86c3a44b0e74ee70a5\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/characters/{{character-id}}",
-					"protocol": "http",
+					"raw": "{{url}}/characters/{{character-id}}",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"characters",
 						"{{character-id}}"
@@ -636,6 +866,16 @@
 		{
 			"name": "Update Character -- bad path id",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -650,12 +890,10 @@
 					"raw": "{\n    \"id\": \"{{character-id}}\",\n    \"constituion\": 14,\n    \"name\": \"Thunk Stonebane\",\n    \"race\": \"HALF_ORC\",\n    \"class\": \"RANGER\",\n    \"level\": 2,\n    \"str\": 15,\n    \"dex\": 11,\n    \"con\": 14,\n    \"int\": 12,\n    \"wis\": 15,\n    \"cha\": 10,\n    \"ac\": 13,\n    \"hp\": 10,\n    \"cr\": 0,\n    \"type\": \"PC\",\n    \"img\": \"\",\n    \"player\": \"5e06bb86c3a44b0e74ee70a5\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/characters/123",
-					"protocol": "http",
+					"raw": "{{url}}/characters/123",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"characters",
 						"123"
@@ -667,6 +905,16 @@
 		{
 			"name": "Update Character -- bad json id",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -681,12 +929,10 @@
 					"raw": "{\n    \"id\": 123,\n    \"constituion\": 14,\n    \"name\": \"Thunk Stonebane\",\n    \"race\": \"HALF_ORC\",\n    \"class\": \"RANGER\",\n    \"level\": 2,\n    \"str\": 15,\n    \"dex\": 11,\n    \"con\": 14,\n    \"int\": 12,\n    \"wis\": 15,\n    \"cha\": 10,\n    \"ac\": 13,\n    \"hp\": 10,\n    \"cr\": 0,\n    \"type\": \"PC\",\n    \"img\": \"\",\n    \"player\": \"5e06bb86c3a44b0e74ee70a5\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/characters/{{character-id}}",
-					"protocol": "http",
+					"raw": "{{url}}/characters/{{character-id}}",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"characters",
 						"{{character-id}}"
@@ -698,6 +944,16 @@
 		{
 			"name": "Update Character -- bad ids",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -712,12 +968,10 @@
 					"raw": "{\n    \"id\": 123,\n    \"constituion\": 14,\n    \"name\": \"Thunk Stonebane\",\n    \"race\": \"HALF_ORC\",\n    \"class\": \"RANGER\",\n    \"level\": 2,\n    \"str\": 15,\n    \"dex\": 11,\n    \"con\": 14,\n    \"int\": 12,\n    \"wis\": 15,\n    \"cha\": 10,\n    \"ac\": 13,\n    \"hp\": 10,\n    \"cr\": 0,\n    \"type\": \"PC\",\n    \"img\": \"\",\n    \"player\": \"5e06bb86c3a44b0e74ee70a5\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/characters/123",
-					"protocol": "http",
+					"raw": "{{url}}/characters/123",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"characters",
 						"123"
@@ -729,6 +983,16 @@
 		{
 			"name": "Update Player",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -743,12 +1007,10 @@
 					"raw": "{\n    \"id\": \"{{player-id}}\",\n    \"fistname\":\"Mary Jane\",\n    \"lastname\":\"Zlotnik\",\n    \"country\":\"US\",\n    \"email\":\"sb@notu.com\",\n    \"img\":\"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/players/{{player-id}}",
-					"protocol": "http",
+					"raw": "{{url}}/players/{{player-id}}",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"players",
 						"{{player-id}}"
@@ -760,6 +1022,16 @@
 		{
 			"name": "Update Player -- bad path id",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -774,12 +1046,10 @@
 					"raw": "{\n    \"id\": \"{{player-id}}\",\n    \"fistname\":\"Mary Jane\",\n    \"lastname\":\"Zlotnik\",\n    \"country\":\"US\",\n    \"email\":\"sb@notu.com\",\n    \"img\":\"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/players/123",
-					"protocol": "http",
+					"raw": "{{url}}/players/123",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"players",
 						"123"
@@ -791,6 +1061,16 @@
 		{
 			"name": "Update Player -- bad json id",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -805,12 +1085,10 @@
 					"raw": "{\n    \"id\": 123,\n    \"fistname\":\"Mary Jane\",\n    \"lastname\":\"Zlotnik\",\n    \"country\":\"US\",\n    \"email\": \"mjz@notyou.com\",\n    \"img\": \"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/players/{{player-id}}",
-					"protocol": "http",
+					"raw": "{{url}}/players/{{player-id}}",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"players",
 						"{{player-id}}"
@@ -822,6 +1100,16 @@
 		{
 			"name": "Update Player -- bad ids",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
@@ -836,12 +1124,10 @@
 					"raw": "{\n    \"id\": 123,\n    \"fistname\":\"Mary Jane\",\n    \"lastname\":\"Zlotnik\",\n    \"country\":\"US\",\n    \"email\": \"mjz@notyou.com\",\n    \"img\": \"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/players/123",
-					"protocol": "http",
+					"raw": "{{url}}/players/123",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"players",
 						"123"
@@ -853,6 +1139,16 @@
 		{
 			"name": "Delete Campaign",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "DELETE",
 				"header": [
 					{
@@ -867,12 +1163,10 @@
 					"raw": "{\n\"id\": \"{{campaign-id}}\",\n\"name\":\"Saturday Hoard of the Dragon Queen\",\n\"start\":\"2019-12-28\",\n\"end\":\"\",\n\"players\":[\"5e06bb55c3a44b0e74ee70a4\",\"5e06bb86c3a44b0e74ee70a5\"],\n\"characters\":[\"5e06bd2cc3a44b0e74ee70a6\",\"5e06bf96c3a44b0e74ee70a7\"],\n\"npcs\":[],\n\"monsters\":[],\n\"dm\":\"5e06bb16c3a44b0e74ee70a3\",\n\"description\":\"Homebrew of HotDQ. Runs every Saturday.\",\n\"img\":\"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/campaigns/{{campaign-id}}",
-					"protocol": "http",
+					"raw": "{{url}}/campaigns/{{campaign-id}}",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"campaigns",
 						"{{campaign-id}}"
@@ -884,6 +1178,16 @@
 		{
 			"name": "Delete Campaign -- bad id",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "DELETE",
 				"header": [
 					{
@@ -898,12 +1202,10 @@
 					"raw": "{\n\"id\": \"{{campaign-id}}\",\n\"name\":\"Saturday Hoard of the Dragon Queen\",\n\"start\":\"2019-12-28\",\n\"end\":\"\",\n\"players\":[\"5e06bb55c3a44b0e74ee70a4\",\"5e06bb86c3a44b0e74ee70a5\"],\n\"characters\":[\"5e06bd2cc3a44b0e74ee70a6\",\"5e06bf96c3a44b0e74ee70a7\"],\n\"npcs\":[],\n\"monsters\":[],\n\"dm\":\"5e06bb16c3a44b0e74ee70a3\",\n\"description\":\"Homebrew of HotDQ. Runs every Saturday.\",\n\"img\":\"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/campaigns/123",
-					"protocol": "http",
+					"raw": "{{url}}/campaigns/123",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"campaigns",
 						"123"
@@ -915,6 +1217,16 @@
 		{
 			"name": "Delete Character",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "DELETE",
 				"header": [
 					{
@@ -929,12 +1241,10 @@
 					"raw": "{\n    \"id\": \"{{character-id}}\",\n    \"constituion\": 14,\n    \"name\": \"Thunk Stonebane\",\n    \"race\": \"HALF_ORC\",\n    \"class\": \"RANGER\",\n    \"level\": 2,\n    \"str\": 15,\n    \"dex\": 11,\n    \"con\": 14,\n    \"int\": 12,\n    \"wis\": 15,\n    \"cha\": 10,\n    \"ac\": 13,\n    \"hp\": 10,\n    \"cr\": 0,\n    \"type\": \"PC\",\n    \"img\": \"\",\n    \"player\": \"5e06bb86c3a44b0e74ee70a5\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/characters/{{character-id}}",
-					"protocol": "http",
+					"raw": "{{url}}/characters/{{character-id}}",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"characters",
 						"{{character-id}}"
@@ -946,6 +1256,16 @@
 		{
 			"name": "Delete Character -- bad id",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "DELETE",
 				"header": [
 					{
@@ -960,12 +1280,10 @@
 					"raw": "{\n    \"id\": \"{{character-id}}\",\n    \"constituion\": 14,\n    \"name\": \"Thunk Stonebane\",\n    \"race\": \"HALF_ORC\",\n    \"class\": \"RANGER\",\n    \"level\": 2,\n    \"str\": 15,\n    \"dex\": 11,\n    \"con\": 14,\n    \"int\": 12,\n    \"wis\": 15,\n    \"cha\": 10,\n    \"ac\": 13,\n    \"hp\": 10,\n    \"cr\": 0,\n    \"type\": \"PC\",\n    \"img\": \"\",\n    \"player\": \"5e06bb86c3a44b0e74ee70a5\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/characters/123",
-					"protocol": "http",
+					"raw": "{{url}}/characters/123",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"characters",
 						"123"
@@ -977,6 +1295,16 @@
 		{
 			"name": "Delete Player",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "DELETE",
 				"header": [
 					{
@@ -991,12 +1319,10 @@
 					"raw": "{\n    \"id\": \"{{player-id}}\",\n    \"name\": \"Mary Jane Zlotnik\",\n    \"email\": \"mjz@notyou.com\",\n    \"img\": \"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/players/{{player-id}}",
-					"protocol": "http",
+					"raw": "{{url}}/players/{{player-id}}",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"players",
 						"{{player-id}}"
@@ -1008,6 +1334,16 @@
 		{
 			"name": "Delete Player -- bad id",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{auth_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "DELETE",
 				"header": [
 					{
@@ -1022,12 +1358,10 @@
 					"raw": "{\n    \"id\": \"{{player-id}}\",\n    \"name\": \"Mary Jane Zlotnik\",\n    \"email\": \"mjz@notyou.com\",\n    \"img\": \"\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/players/123",
-					"protocol": "http",
+					"raw": "{{url}}/players/123",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"players",
 						"123"
