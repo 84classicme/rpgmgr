@@ -1,24 +1,28 @@
 package io.festerson.rpgvault.players;
 
 import io.festerson.rpgvault.domain.Player;
-import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import reactor.util.context.Context;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
+import static io.festerson.rpgvault.MdcConfig.logOnNext;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
-@CommonsLog
+@Slf4j
 @RestController
 public class PlayerController {
 
     private final PlayerService playerService;
+
 
     @Autowired
     public PlayerController(PlayerService playerService) {
@@ -26,15 +30,17 @@ public class PlayerController {
     }
 
     @RequestMapping(value="/players", method = RequestMethod.GET)
-    public Mono<ResponseEntity<List<Player>>> getPlayers() {
-        log.info("Getting data for all players.");
+    public Mono<ResponseEntity<List<Player>>> getPlayers(Principal principal) {
+        //log.info("Getting data for all players.");
         return playerService.getPlayers()
             .collectList()
+            .doOnEach(logOnNext(list -> log.info("found {} players", list != null ? list.size() : 0)))
             .map(allFound -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(allFound))
             .onErrorReturn(ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header("RpgMgrMessage", "Server error fetching all players")
-                .build());
+                .build())
+            .contextWrite(Context.of("USER",  principal.getName()));
     }
 
     @RequestMapping(value="/players/{playerId}", method = RequestMethod.GET)

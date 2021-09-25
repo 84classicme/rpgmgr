@@ -35,7 +35,7 @@ public class PlayerControllerTest {
         Flux<Player> playerFlux = TestUtils.buildPlayers();
         List<Player> list = playerFlux.collectList().block();
         Mockito.when(playerService.getPlayers()).thenReturn(playerFlux);
-        StepVerifier.create(playerController.getPlayers())
+        StepVerifier.create(playerController.getPlayers(null))
             .expectNextMatches(response -> response.getBody().size() == list.size())
             .verifyComplete();
     }
@@ -43,7 +43,7 @@ public class PlayerControllerTest {
     @Test
     public void testGetPlayersException() throws Exception {
         Mockito.doReturn(Flux.error(new RpgMgrException())).when(playerService).getPlayers();
-        StepVerifier.create(playerController.getPlayers())
+        StepVerifier.create(playerController.getPlayers(null))
             .expectNextMatches(response -> {
                 response.getStatusCode().is5xxServerError();
                 HttpHeaders headers = response.getHeaders();

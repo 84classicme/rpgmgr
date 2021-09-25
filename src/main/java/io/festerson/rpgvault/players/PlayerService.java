@@ -6,7 +6,7 @@ import com.generated.GetCountryRequest;
 import com.generated.GetCountryResponse;
 import io.festerson.rpgvault.domain.Player;
 import io.festerson.rpgvault.exception.RpgMgrException;
-import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,10 +15,13 @@ import reactor.core.publisher.Mono;
 
 import javax.xml.ws.BindingProvider;
 
+import static io.festerson.rpgvault.MdcConfig.logOnNext;
 
+@Slf4j
 @Service
-@CommonsLog
 public class PlayerService {
+
+    //private static final Logger log = LoggerFactory.getLogger(PlayerService.class);
 
     @Autowired
     private PlayerRepository playerRepository;
@@ -27,7 +30,9 @@ public class PlayerService {
     private String webserviceEndpointUrl;
 
     public Flux<Player> getPlayers(){
-        return playerRepository.findAll().onErrorResume(t -> Mono.error(handleException(t)));
+        return playerRepository.findAll()
+            .onErrorResume(t -> Mono.error(handleException(t)))
+            .doOnEach(logOnNext(r -> log.info("found player {} {}", r.getFirstName(), r.getLastName())));
     }
 
     public Mono<Player> getPlayerById(String id){
