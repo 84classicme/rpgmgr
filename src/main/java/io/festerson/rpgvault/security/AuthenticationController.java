@@ -1,6 +1,7 @@
 package io.festerson.rpgvault.security;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +11,7 @@ import reactor.core.publisher.Mono;
 
 @AllArgsConstructor
 @RestController
+@Slf4j
 public class AuthenticationController {
 
     private JWTUtil jwtUtil;
@@ -18,6 +20,7 @@ public class AuthenticationController {
 
     @PostMapping("/auth")
     public Mono<ResponseEntity<AuthResponse>> login(@RequestBody AuthRequest ar) {
+        log.info("username:"+ar.getUsername());
         return userService.findByUsername(ar.getUsername())
             .filter(userDetails -> passwordEncoder.encode(ar.getPassword()).equals(userDetails.getPassword()))
             .map(userDetails -> ResponseEntity.ok(new AuthResponse(jwtUtil.generateToken(userDetails))))

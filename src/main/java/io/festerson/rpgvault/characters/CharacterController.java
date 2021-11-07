@@ -1,6 +1,8 @@
 package io.festerson.rpgvault.characters;
 
 import io.festerson.rpgvault.domain.PlayerCharacter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,7 @@ public class CharacterController {
     // Is there way to duplicate how the handler does this?
     // Controller do not have access to ServerRequest.
     @GetMapping("/characters")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Get all characters. use player query param to get all characters for given player id.") })
     public Mono<ResponseEntity<List<PlayerCharacter>>> getCharacters(@RequestParam(value="player", required=false) String playerId) {
         if (playerId == null || playerId.isEmpty()) {
             return characterService.getCharacters()
@@ -52,6 +55,7 @@ public class CharacterController {
     }
 
     @GetMapping("/characters/{characterId}")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Get character by id") })
     public Mono<ResponseEntity<PlayerCharacter>> getCharacter(@PathVariable String characterId) {
         return characterService.getCharacterById(characterId)
             .map(character -> ResponseEntity.ok().body(character))
@@ -63,6 +67,7 @@ public class CharacterController {
     }
 
     @PostMapping("/characters")
+    @ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Create character") })
     public Mono<ResponseEntity<PlayerCharacter>> saveCharacter(@Valid @RequestBody PlayerCharacter playerCharacter) {
         return characterService.createCharacter(playerCharacter)
             .map(saved -> ResponseEntity
@@ -79,6 +84,7 @@ public class CharacterController {
     }
 
     @PutMapping("/characters/{characterId}")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Update character") })
     public Mono<ResponseEntity<PlayerCharacter>> updateCharacter(@Valid @RequestBody PlayerCharacter playerCharacter, @PathVariable String characterId){
         return characterService.updateCharacter(characterId, playerCharacter)
             .map(updatedCharacter -> ResponseEntity
@@ -93,6 +99,7 @@ public class CharacterController {
     }
 
     @DeleteMapping("/characters/{characterId}")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Delete character") })
     public Mono<ResponseEntity<Void>> deleteCharacter(@PathVariable String characterId){
         return characterService.deleteCharacter(characterId)
             .thenReturn(ResponseEntity.noContent().<Void>build())

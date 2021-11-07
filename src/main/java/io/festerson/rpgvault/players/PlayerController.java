@@ -18,6 +18,7 @@ import static io.festerson.rpgvault.MdcConfig.logOnNext;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Slf4j
+@RequestMapping(value = "/players")
 @RestController
 public class PlayerController {
 
@@ -29,7 +30,8 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    @RequestMapping(value="/players", method = RequestMethod.GET)
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public Mono<ResponseEntity<List<Player>>> getPlayers(Principal principal) {
         //log.info("Getting data for all players.");
         return playerService.getPlayers()
@@ -43,7 +45,8 @@ public class PlayerController {
             .contextWrite(Context.of("USER",  principal.getName()));
     }
 
-    @RequestMapping(value="/players/{playerId}", method = RequestMethod.GET)
+    @GetMapping(value="/{playerId}")
+    @ResponseStatus(HttpStatus.OK)
     public Mono<ResponseEntity<Player>> getPlayer(@PathVariable String playerId) {
         log.info("Getting data for player id: " + playerId);
         return playerService.getPlayerById(playerId)
@@ -55,7 +58,8 @@ public class PlayerController {
                 .build());
     }
 
-    @RequestMapping(value="/players", method = RequestMethod.POST)
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Mono<ResponseEntity<Player>> createPlayer(@Valid @RequestBody Player player) {
         log.info("Creating new player: " + player);
         return playerService.createPlayer(player)
@@ -73,7 +77,8 @@ public class PlayerController {
                 .build());
     }
 
-    @RequestMapping(value="/players/{playerId}", method = RequestMethod.PUT)
+    @PutMapping(value="/{playerId}")
+    @ResponseStatus(HttpStatus.OK)
     public Mono<ResponseEntity<Player>> updatePlayer(@Valid @RequestBody Player player, @PathVariable String playerId){
         log.info("Updating player with data: " + player);
         return playerService.updatePlayer(playerId, player)
@@ -88,7 +93,8 @@ public class PlayerController {
                 .build());
     }
 
-    @RequestMapping(value="/players/{playerId}", method = RequestMethod.DELETE)
+    @DeleteMapping(value="/{playerId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<ResponseEntity<Void>> deletePlayer(@PathVariable String playerId){
         log.info("Deleting player: " + playerId);
         return playerService.deletePlayer(playerId)

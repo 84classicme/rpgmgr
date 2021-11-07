@@ -13,6 +13,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public Mono<User> findByUsername(String username) {
+
         return userRepository.findByUsername(username).onErrorReturn(new User());
     }
 }

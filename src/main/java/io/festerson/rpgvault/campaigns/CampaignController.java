@@ -1,6 +1,5 @@
 package io.festerson.rpgvault.campaigns;
 
-
 import io.festerson.rpgvault.domain.Campaign;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
