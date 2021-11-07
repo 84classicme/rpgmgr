@@ -1,6 +1,7 @@
 package io.festerson.rpgvault.players;
 
 import io.festerson.rpgvault.domain.Player;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,10 @@ import java.util.List;
 import static io.festerson.rpgvault.MdcConfig.logOnNext;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
+@RestController
 @Slf4j
 @RequestMapping(value = "/players")
-@RestController
+@SecurityRequirement(name = "jwt")
 public class PlayerController {
 
     private final PlayerService playerService;
@@ -47,7 +49,7 @@ public class PlayerController {
 
     @GetMapping(value="/{playerId}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<ResponseEntity<Player>> getPlayer(@PathVariable String playerId) {
+    public Mono<ResponseEntity<Player>> getPlayer(Principal principal, @PathVariable String playerId) {
         log.info("Getting data for player id: " + playerId);
         return playerService.getPlayerById(playerId)
             .map(found -> ResponseEntity.ok().body(found))
@@ -55,12 +57,13 @@ public class PlayerController {
             .onErrorReturn(ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header("RpgMgrMessage", "Server error fetching player id: " + playerId)
-                .build());
+                .build())
+            .contextWrite(Context.of("USER",  principal.getName()));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<ResponseEntity<Player>> createPlayer(@Valid @RequestBody Player player) {
+    public Mono<ResponseEntity<Player>> createPlayer(Principal principal, @Valid @RequestBody Player player) {
         log.info("Creating new player: " + player);
         return playerService.createPlayer(player)
             .map(saved -> ResponseEntity
@@ -74,12 +77,13 @@ public class PlayerController {
             .onErrorReturn(ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header("RpgMgrMessage", "Server error creating player.")
-                .build());
+                .build())
+            .contextWrite(Context.of("USER",  principal.getName()));
     }
 
     @PutMapping(value="/{playerId}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<ResponseEntity<Player>> updatePlayer(@Valid @RequestBody Player player, @PathVariable String playerId){
+    public Mono<ResponseEntity<Player>> updatePlayer(Principal principal, @Valid @RequestBody Player player, @PathVariable String playerId){
         log.info("Updating player with data: " + player);
         return playerService.updatePlayer(playerId, player)
             .map(updatedCharacter -> ResponseEntity
@@ -90,12 +94,13 @@ public class PlayerController {
             .onErrorReturn(ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header("RpgMgrMessage", "Server error creating player id: " + playerId)
-                .build());
+                .build())
+            .contextWrite(Context.of("USER",  principal.getName()));
     }
 
     @DeleteMapping(value="/{playerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Mono<ResponseEntity<Void>> deletePlayer(@PathVariable String playerId){
+    public Mono<ResponseEntity<Void>> deletePlayer(Principal principal, @PathVariable String playerId){
         log.info("Deleting player: " + playerId);
         return playerService.deletePlayer(playerId)
             .thenReturn(ResponseEntity.noContent().<Void>build())
@@ -103,6 +108,7 @@ public class PlayerController {
             .onErrorReturn(ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header("RpgMgrMessage", "Server error deleting player id: " + playerId)
-                .build());
+                .build())
+            .contextWrite(Context.of("USER",  principal.getName()));
     }
 }

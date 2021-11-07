@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.generated.GetCountryRequest;
 import com.generated.GetCountryResponse;
+import com.sun.security.auth.UserPrincipal;
 import io.festerson.rpgvault.campaigns.CampaignRepository;
 import io.festerson.rpgvault.campaigns.CampaignRequest;
 import io.festerson.rpgvault.characters.CharacterRepository;
@@ -30,6 +31,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import java.io.*;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -53,6 +55,12 @@ public class TestUtils {
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     public static final List<String> FIRST_NAMES = Arrays.asList("Ragnor", "Dracca", "Corellion", "Thunk", "Garl", "Brevnor", "Vera");
     public static final List<String> LAST_NAMES = Arrays.asList("Stonebane", "Mannix", "Brightstar", "Goreman", "Lightfingers", "Pox", "Krinkles");
+
+
+    public static Principal buildSecurityPrincipal(){
+        UserPrincipal userPrincipal = new UserPrincipal("TEST");
+        return  userPrincipal;
+    }
 
     public static String generateName(){
         Collections.shuffle(FIRST_NAMES);

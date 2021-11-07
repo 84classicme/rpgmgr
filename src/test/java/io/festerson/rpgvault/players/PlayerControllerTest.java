@@ -15,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.security.Principal;
 import java.util.List;
 
 public class PlayerControllerTest {
@@ -25,8 +26,11 @@ public class PlayerControllerTest {
     @Mock
     PlayerService playerService;
 
+    private static final Principal USER_PRINCIPAL = TestUtils.buildSecurityPrincipal();
+
     @BeforeEach
     public void setup(){
+
         MockitoAnnotations.openMocks(this);
     }
 
@@ -35,7 +39,7 @@ public class PlayerControllerTest {
         Flux<Player> playerFlux = TestUtils.buildPlayers();
         List<Player> list = playerFlux.collectList().block();
         Mockito.when(playerService.getPlayers()).thenReturn(playerFlux);
-        StepVerifier.create(playerController.getPlayers(null))
+        StepVerifier.create(playerController.getPlayers(USER_PRINCIPAL))
             .expectNextMatches(response -> response.getBody().size() == list.size())
             .verifyComplete();
     }
@@ -43,7 +47,7 @@ public class PlayerControllerTest {
     @Test
     public void testGetPlayersException() throws Exception {
         Mockito.doReturn(Flux.error(new RpgMgrException())).when(playerService).getPlayers();
-        StepVerifier.create(playerController.getPlayers(null))
+        StepVerifier.create(playerController.getPlayers(USER_PRINCIPAL))
             .expectNextMatches(response -> {
                 response.getStatusCode().is5xxServerError();
                 HttpHeaders headers = response.getHeaders();
@@ -58,7 +62,7 @@ public class PlayerControllerTest {
         Mono<Player> playerMono = Mono.just(TestUtils.buildPlayer());
         Mockito.when(playerService.getPlayerById("1")).thenReturn(playerMono);
         Player expected = playerMono.block();
-        StepVerifier.create(playerController.getPlayer("1"))
+        StepVerifier.create(playerController.getPlayer(USER_PRINCIPAL,"1"))
             .expectNextMatches(response -> {
                 Player result = response.getBody();
                 Assertions.assertThat(result.getFirstName()).isEqualTo(expected.getFirstName());
@@ -70,7 +74,7 @@ public class PlayerControllerTest {
     @Test
     public void testGetPlayerByIdException() throws Exception {
         Mockito.doReturn(Mono.error(new RpgMgrException())).when(playerService).getPlayerById("1");
-        StepVerifier.create(playerController.getPlayer("1"))
+        StepVerifier.create(playerController.getPlayer(USER_PRINCIPAL,"1"))
             .expectNextMatches(response -> {
                 response.getStatusCode().is5xxServerError();
                 HttpHeaders headers = response.getHeaders();
@@ -84,7 +88,7 @@ public class PlayerControllerTest {
     public void testCreatePlayerHappyPath() throws Exception {
        Player expected = TestUtils.buildPlayer();
        Mockito.when(playerService.createPlayer(expected)).thenReturn(Mono.just(expected));
-       StepVerifier.create(playerController.createPlayer(expected))
+       StepVerifier.create(playerController.createPlayer(USER_PRINCIPAL,expected))
            .expectNextMatches(response -> {
                Player result = response.getBody();
                Assertions.assertThat(result.getFirstName()).isEqualTo(expected.getFirstName());
@@ -97,7 +101,7 @@ public class PlayerControllerTest {
     public void testCreatePlayerException() throws Exception {
         Player expected = TestUtils.buildPlayer();
         Mockito.doReturn(Mono.error(new RpgMgrException())).when(playerService).createPlayer(expected);
-        StepVerifier.create(playerController.createPlayer(expected))
+        StepVerifier.create(playerController.createPlayer(USER_PRINCIPAL,expected))
             .expectNextMatches(response -> {
                 response.getStatusCode().is5xxServerError();
                 HttpHeaders headers = response.getHeaders();
@@ -111,7 +115,7 @@ public class PlayerControllerTest {
     public void testUpdatePlayerHappyPath() throws Exception {
         Player expected = TestUtils.buildPlayer();
         Mockito.when(playerService.updatePlayer("1", expected)).thenReturn(Mono.just(expected));
-        StepVerifier.create(playerController.updatePlayer(expected, "1"))
+        StepVerifier.create(playerController.updatePlayer(USER_PRINCIPAL, expected, "1"))
             .expectNextMatches(response -> {
                 Player result = response.getBody();
                 Assertions.assertThat(result.getFirstName()).isEqualTo(expected.getFirstName());
@@ -124,7 +128,7 @@ public class PlayerControllerTest {
     public void testUpdatePlayerException() throws Exception {
         Player expected = TestUtils.buildPlayer();
         Mockito.doReturn(Mono.error(new RpgMgrException())).when(playerService).updatePlayer("1", expected);
-        StepVerifier.create(playerController.updatePlayer(expected, "1"))
+        StepVerifier.create(playerController.updatePlayer(USER_PRINCIPAL,expected, "1"))
             .expectNextMatches(response -> {
                 response.getStatusCode().is5xxServerError();
                 HttpHeaders headers = response.getHeaders();
@@ -137,13 +141,13 @@ public class PlayerControllerTest {
     @Test
     public void testDeletePlayerHappyPath() throws Exception {
         Mockito.when(playerService.deletePlayer("1")).thenReturn(Mono.empty());
-        StepVerifier.create(playerController.deletePlayer("1")).expectNextCount(1).verifyComplete();
+        StepVerifier.create(playerController.deletePlayer(USER_PRINCIPAL,"1")).expectNextCount(1).verifyComplete();
     }
 
     @Test
     public void testDeletePlayerException() throws Exception {
         Mockito.doReturn(Mono.error(new RpgMgrException())).when(playerService).deletePlayer("1");
-        StepVerifier.create(playerController.deletePlayer("1"))
+        StepVerifier.create(playerController.deletePlayer(USER_PRINCIPAL,"1"))
             .expectNextMatches(response -> {
                 response.getStatusCode().is5xxServerError();
                 HttpHeaders headers = response.getHeaders();
