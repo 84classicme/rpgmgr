@@ -37,7 +37,6 @@ public class SecurityConfig {
             .securityContextRepository(securityContextRepository)
             .authorizeExchange()
             .pathMatchers(HttpMethod.OPTIONS).permitAll()
-            //.pathMatchers("/**").permitAll()
             .pathMatchers("/auth").permitAll()
             // swagger ui entry point is  http://localhost:8080/swagger-ui.html and then redirects
             // springdoc v3 api json entry point is /v3/api-docs
