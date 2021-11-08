@@ -29,7 +29,28 @@ public class WebClientConfig {
             });
 
         WebClient webClient = WebClient.builder()
+            .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(2 * 1024 * 1024))
             .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient).wiretap(true)))
+            .build();
+
+        return webClient;
+    }
+
+    @Bean
+    public WebClient getReactivePF2eClient(){
+        TcpClient tcpClient = TcpClient.create();
+
+        tcpClient
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, APPLICATION_TIMEOUT_MILLIS)
+            .doOnConnected(connection -> {
+                connection.addHandlerLast(new ReadTimeoutHandler(APPLICATION_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS));
+                connection.addHandlerLast(new WriteTimeoutHandler(APPLICATION_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS));
+            });
+
+        WebClient webClient = WebClient.builder()
+            .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(8 * 1024 * 1024))
+            .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient).wiretap(true)))
+            .defaultHeader("Authorization", "4c79b5ad-260f-4bcb-bf7a-0d55a1e0e17a")
             .build();
 
         return webClient;
