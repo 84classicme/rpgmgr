@@ -3,7 +3,7 @@ package io.festerson.rpgvault.campaigns;
 import io.festerson.rpgvault.WebClientConfig;
 import io.festerson.rpgvault.domain.Campaign;
 import io.festerson.rpgvault.exception.*;
-import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -13,13 +13,12 @@ import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
-
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 
 @Service
-@CommonsLog
+@Slf4j
 public class CampaignService {
 
     @Autowired

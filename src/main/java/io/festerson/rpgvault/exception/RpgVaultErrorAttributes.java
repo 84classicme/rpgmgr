@@ -1,6 +1,6 @@
 package io.festerson.rpgvault.exception;
 
-import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.DefaultErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import org.springframework.web.server.ServerWebInputException;
 
 import java.util.Map;
 
-@CommonsLog
+@Slf4j
 @Component
 public class RpgVaultErrorAttributes extends DefaultErrorAttributes {
 

@@ -1,7 +1,7 @@
 package io.festerson.rpgvault.campaigns;
 
 import io.festerson.rpgvault.domain.Campaign;
-import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
-@CommonsLog
+@Slf4j
 @RestController
 public class CampaignController {
 

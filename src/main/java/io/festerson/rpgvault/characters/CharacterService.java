@@ -2,14 +2,14 @@ package io.festerson.rpgvault.characters;
 
 import io.festerson.rpgvault.domain.PlayerCharacter;
 import io.festerson.rpgvault.exception.RpgMgrException;
-import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-@CommonsLog
+@Slf4j
 public class CharacterService {
 
     @Autowired

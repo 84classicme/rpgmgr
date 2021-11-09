@@ -1,6 +1,6 @@
 package io.festerson.rpgvault.exception;
 
-import lombok.extern.apachecommons.CommonsLog;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.Map;
 
-@CommonsLog
+@Slf4j
 @Component
 @Order(-2)
 public class RpgVaultExceptionHandler extends AbstractErrorWebExceptionHandler {

@@ -15,6 +15,7 @@ import reactor.util.retry.Retry;
 import java.time.Duration;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -22,6 +23,39 @@ public class PF2eService {
 
     @Autowired
     private ExceptionService exceptionService;
+
+    @Autowired
+    private PF2eActionRepository pf2eActionRepository;
+
+    @Autowired
+    private PF2eAncestryRepository pf2eAncestryRepository;
+
+    @Autowired
+    private PF2eSpellRepository pf2eSpellRepository;
+
+    @Autowired
+    private PF2eClassRepository pf2eClassRepository;
+
+    @Autowired
+    private PF2eEquipmentRepository  pf2eEquipmentRepository;
+
+    @Autowired
+    private PF2eAncestryFeatureRepository pf2eAncestryFeatureRepository;
+
+    @Autowired
+    private PF2eArchetypeRepository pf2eArchetypeRepository;
+
+    @Autowired
+    private PF2eBackgroundRepository pf2eBackgroundRepository;
+
+    @Autowired
+    private PF2eClassFeatureRepository pf2eClassFeatureRepository;
+
+    @Autowired
+    private PF2eDeityRepository pf2eDeityRepository;
+
+    @Autowired
+    private PF2eFeatRepository pf2eFeatRepository;
 
     private WebClientConfig webClientConfig;
 
@@ -369,6 +403,56 @@ public class PF2eService {
                             "Cannot process PF2eService.getAncestries due to client error.",
                             clientException))));
     }
+
+    public Mono<Void> saveSpell(SpellResult spell){
+        return pf2eSpellRepository.save(spell).then();
+    }
+
+
+    public Mono<Void> saveActions(List<ActionResult> actions){
+        return pf2eActionRepository.saveAll(actions).then();
+    }
+
+    public Mono<Void> saveAncestries(List<AncestryResult> ancestries){
+        return pf2eAncestryRepository.saveAll(ancestries).then();
+    }
+
+    public Mono<Void> saveAncestryFeatures(List<AncestryFeatureResult> ancestryFeatures){
+        return pf2eAncestryFeatureRepository.saveAll(ancestryFeatures).then();
+    }
+
+    public Mono<Void> saveArchetypes(List<ArchetypeResult> archetypes){
+        return pf2eArchetypeRepository.saveAll(archetypes).then();
+    }
+
+    public Mono<Void> saveBackgrounds(List<BackgroundResult> backgrounds){
+        return pf2eBackgroundRepository.saveAll(backgrounds).then();
+    }
+
+    public Mono<Void> saveClasses(List<ClassResult> classes){
+        return pf2eClassRepository.saveAll(classes).then();
+    }
+
+    public Mono<Void> saveClassFeatures(List<ClassFeatureResult> classFeatures){
+        return pf2eClassFeatureRepository.saveAll(classFeatures).then();
+    }
+
+    public Mono<Void> saveDeities(List<DeityResult> deities){
+        return pf2eDeityRepository.saveAll(deities).then();
+    }
+
+    public Mono<Void> saveEquipment(List<EquipmentResult> equipment){
+        return pf2eEquipmentRepository.saveAll(equipment).then();
+    }
+
+    public Mono<Void> saveFeats(List<FeatResult> feats){
+        return pf2eFeatRepository.saveAll(feats).then();
+    }
+
+    public Mono<Void> saveSpells(List<SpellResult> spells){
+        return pf2eSpellRepository.saveAll(spells).then();
+    }
+
 
     private RuntimeException handleStatusCode(ClientResponse response){
        if (response.statusCode().is4xxClientError()){
