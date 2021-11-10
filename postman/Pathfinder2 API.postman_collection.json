@@ -1,0 +1,452 @@
+{
+	"info": {
+		"_postman_id": "9ea77314-4c97-45fc-b53d-45160922045e",
+		"name": "Pathfinder2 API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Resource Lists",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "4c79b5ad-260f-4bcb-bf7a-0d55a1e0e17a",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.pathfinder2.fr/v1/pf2",
+					"protocol": "https",
+					"host": [
+						"api",
+						"pathfinder2",
+						"fr"
+					],
+					"path": [
+						"v1",
+						"pf2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actions",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "4c79b5ad-260f-4bcb-bf7a-0d55a1e0e17a",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.pathfinder2.fr/v1/pf2/action",
+					"protocol": "https",
+					"host": [
+						"api",
+						"pathfinder2",
+						"fr"
+					],
+					"path": [
+						"v1",
+						"pf2",
+						"action"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ancestories",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "4c79b5ad-260f-4bcb-bf7a-0d55a1e0e17a",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.pathfinder2.fr/v1/pf2/ancestry",
+					"protocol": "https",
+					"host": [
+						"api",
+						"pathfinder2",
+						"fr"
+					],
+					"path": [
+						"v1",
+						"pf2",
+						"ancestry"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AncestoryFeatures",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "4c79b5ad-260f-4bcb-bf7a-0d55a1e0e17a",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.pathfinder2.fr/v1/pf2/ancestryFeature",
+					"protocol": "https",
+					"host": [
+						"api",
+						"pathfinder2",
+						"fr"
+					],
+					"path": [
+						"v1",
+						"pf2",
+						"ancestryFeature"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Archetypes",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "4c79b5ad-260f-4bcb-bf7a-0d55a1e0e17a",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.pathfinder2.fr/v1/pf2/archetype",
+					"protocol": "https",
+					"host": [
+						"api",
+						"pathfinder2",
+						"fr"
+					],
+					"path": [
+						"v1",
+						"pf2",
+						"archetype"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Backgrounds",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "4c79b5ad-260f-4bcb-bf7a-0d55a1e0e17a",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.pathfinder2.fr/v1/pf2/background",
+					"protocol": "https",
+					"host": [
+						"api",
+						"pathfinder2",
+						"fr"
+					],
+					"path": [
+						"v1",
+						"pf2",
+						"background"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Classes",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "4c79b5ad-260f-4bcb-bf7a-0d55a1e0e17a",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.pathfinder2.fr/v1/pf2/class",
+					"protocol": "https",
+					"host": [
+						"api",
+						"pathfinder2",
+						"fr"
+					],
+					"path": [
+						"v1",
+						"pf2",
+						"class"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClassFeatures",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "4c79b5ad-260f-4bcb-bf7a-0d55a1e0e17a",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.pathfinder2.fr/v1/pf2/classFeature",
+					"protocol": "https",
+					"host": [
+						"api",
+						"pathfinder2",
+						"fr"
+					],
+					"path": [
+						"v1",
+						"pf2",
+						"classFeature"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deities",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "4c79b5ad-260f-4bcb-bf7a-0d55a1e0e17a",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.pathfinder2.fr/v1/pf2/deity",
+					"protocol": "https",
+					"host": [
+						"api",
+						"pathfinder2",
+						"fr"
+					],
+					"path": [
+						"v1",
+						"pf2",
+						"deity"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Equipment",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "4c79b5ad-260f-4bcb-bf7a-0d55a1e0e17a",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.pathfinder2.fr/v1/pf2/equipment",
+					"protocol": "https",
+					"host": [
+						"api",
+						"pathfinder2",
+						"fr"
+					],
+					"path": [
+						"v1",
+						"pf2",
+						"equipment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Feats",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "4c79b5ad-260f-4bcb-bf7a-0d55a1e0e17a",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.pathfinder2.fr/v1/pf2/feat",
+					"protocol": "https",
+					"host": [
+						"api",
+						"pathfinder2",
+						"fr"
+					],
+					"path": [
+						"v1",
+						"pf2",
+						"feat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Spells",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "4c79b5ad-260f-4bcb-bf7a-0d55a1e0e17a",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.pathfinder2.fr/v1/pf2/spell",
+					"protocol": "https",
+					"host": [
+						"api",
+						"pathfinder2",
+						"fr"
+					],
+					"path": [
+						"v1",
+						"pf2",
+						"spell"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
