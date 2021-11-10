@@ -1,4 +1,4 @@
-@PF2e @Background
+@RPGmgr @PF2e @Background
 
 Feature: Fetch background data from remote PF2e SRD rest endpoints
 

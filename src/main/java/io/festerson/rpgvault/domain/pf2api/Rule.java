@@ -14,6 +14,10 @@ public class Rule {
     private String label;
     private String selector;
     private String mode;
+    private List<String> outcome;
     private String path;
+    private Predicate predicate;
+    private String text;
+    private List<String> traits;
     private Object value;
 }

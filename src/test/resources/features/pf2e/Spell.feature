@@ -1,4 +1,4 @@
-@PF2e @Spell
+@RPGmgr @PF2e @Spell
 
 Feature: Fetch spell data from remote PF2e SRD rest endpoints
 

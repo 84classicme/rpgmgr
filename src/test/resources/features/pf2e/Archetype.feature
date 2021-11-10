@@ -1,4 +1,4 @@
-@PF2e @Archetype
+@RPGmgr @PF2e @Archetype
 
 Feature: Fetch archetype data from remote PF2e SRD rest endpoints
 

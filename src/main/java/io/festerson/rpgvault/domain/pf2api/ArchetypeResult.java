@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Document(collection="pf2e-archetypes")
 public class ArchetypeResult{
-    private String id;
+    private String _id;
     private String name;
     private String content;
 }

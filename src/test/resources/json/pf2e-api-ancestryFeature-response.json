@@ -1,0 +1,99 @@
+{
+    "count": 2,
+    "results": [
+        {
+            "_id": "1oLMOmLpurfWTTff",
+            "data": {
+                "actionCategory": {
+                    "value": ""
+                },
+                "actionType": {
+                    "value": "passive"
+                },
+                "actions": {
+                    "value": null
+                },
+                "description": {
+                    "value": "<p>You descend from celestials or were touched by the celestial realms, gaining an air of awe and grace, as well as features distinctive to your celestial forebears. You gain the aasimar trait, in addition to the traits from your ancestry. You also gain @Compendium[pf2e.ancestryfeatures.Low-Light Vision]{Low-Light Vision}, or you gain @Compendium[pf2e.ancestryfeatures.Darkvision]{Darkvision} if your ancestry already has low-light vision. You can choose from aasimar feats and feats from your ancestry whenever you gain an ancestry feat.</p>"
+                },
+                "featType": {
+                    "value": "heritage"
+                },
+                "level": {
+                    "value": 1
+                },
+                "location": "",
+                "prerequisites": {
+                    "value": []
+                },
+                "rules": [
+                    {
+                        "add": [
+                            "aasimar"
+                        ],
+                        "key": "ActorTraits"
+                    }
+                ],
+                "source": {
+                    "value": "Pathfinder Advanced Player's Guide"
+                },
+                "traits": {
+                    "custom": "",
+                    "rarity": {
+                        "value": "uncommon"
+                    },
+                    "value": [
+                        "aasimar",
+                        "versatile heritage"
+                    ]
+                }
+            },
+            "effects": [],
+            "name": "Aasimar",
+            "type": "feat"
+        },       {
+            "_id": "7gGcpQMqnZhBDZLI",
+            "data": {
+                "actionCategory": {
+                    "value": "interaction"
+                },
+                "actionType": {
+                    "value": "passive"
+                },
+                "actions": {
+                    "value": null
+                },
+                "description": {
+                    "value": "<p>You descend from a line of anadi who worked to perfect their transformation magic, allowing them to integrate into a wider variety of cultures. Choose a common, Medium humanoid ancestry. Your human form is replaced with a form that matches this choice. You also gain the @Compendium[pf2e.feats-srd.Adopted Ancestry]{Adopted Ancestry} feat for your chosen humanoid ancestry.</p>"
+                },
+                "featType": {
+                    "value": "heritage"
+                },
+                "level": {
+                    "value": 1
+                },
+                "location": "",
+                "prerequisites": {
+                    "value": []
+                },
+                "rules": [],
+                "source": {
+                    "value": ""
+                },
+                "traits": {
+                    "custom": "",
+                    "rarity": {
+                        "value": "common"
+                    },
+                    "value": [
+                        "anadi",
+                        "heritage"
+                    ]
+                }
+            },
+            "effects": [],
+            "name": "Adaptive Anadi",
+            "type": "feat"
+        }
+	]
+}

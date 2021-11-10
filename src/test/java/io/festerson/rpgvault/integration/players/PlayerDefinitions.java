@@ -1,5 +1,6 @@
 package io.festerson.rpgvault.integration.players;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.DataTableType;
@@ -10,15 +11,18 @@ import io.cucumber.java.en.When;
 import io.festerson.rpgvault.domain.Player;
 import io.festerson.rpgvault.integration.CucumberTest;
 import io.festerson.rpgvault.players.PlayerRepository;
+import io.festerson.rpgvault.security.AuthRequest;
+import io.festerson.rpgvault.security.AuthResponse;
 import io.festerson.rpgvault.util.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -45,12 +49,23 @@ public class PlayerDefinitions extends CucumberTest {
     private Flux<Player> updatedFlux;
     private Flux<Player> deletedFlux;
     private String url;
+    private String token;
 
     @Before
     public void setUp() {
         playerFlux = TestUtils.buildPlayers();
         updatedFlux = TestUtils.buildPlayersToUpdate();
         deletedFlux = TestUtils.buildPlayersToDelete();
+        AuthRequest authRequest = new AuthRequest("admin", "admin");
+        EntityExchangeResult<AuthResponse> resp = this.webTestClient
+            .post().uri("/auth")
+            .body(BodyInserters.fromPublisher(Mono.just(authRequest), AuthRequest.class))
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectBody(AuthResponse.class)
+            .returnResult();
+        AuthResponse authResponse = resp.getResponseBody();
+        token = authResponse != null ? authResponse.getToken() : "";
     }
 
     @After
@@ -86,8 +101,8 @@ public class PlayerDefinitions extends CucumberTest {
     }
 
     @When("I have new {word} {word} {word} {word} or {word} data for a {word}")
-    public void updatePlayerEmail(String firstname, String lastname, String email, String imageUrl, String id){
-        player = new Player(id,firstname, lastname, email, imageUrl);
+    public void updatePlayerEmail(String firstname, String lastname, String email, String country, String imageUrl, String id){
+        player = new Player(id,firstname, lastname, email, country, imageUrl);
         url = "/players/" + id;
     }
 
@@ -102,7 +117,7 @@ public class PlayerDefinitions extends CucumberTest {
         if(lastname.equals("empty")) {lastname = "";}
         else if(lastname.equals("null")) {lastname = null;}
 
-        player = new Player(firstname, lastname, "US", email, "https://www.example.com/my-image.jpg");
+        player = new Player(firstname, lastname, email, "US", "https://www.example.com/my-image.jpg");
     }
 
     @When("I create a new player")
@@ -132,6 +147,7 @@ public class PlayerDefinitions extends CucumberTest {
     public void verifyPlayer(String firstname, String lastname, String email, String imageurl){
         this.webTestClient
             .get().uri(url)
+            .header("Authorization", "Bearer " + token)
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk()
@@ -143,41 +159,22 @@ public class PlayerDefinitions extends CucumberTest {
     }
 
     @Then("the response will return http status ok and data for all players")
-    public void verifyAllPlayers(List<Player> players){
+    public void verifyAllPlayers(DataTable table){
+        List<Map<String, String>> players = table.asMaps(String.class, String.class);
         webTestClient
             .get().uri(url)
+            .header("Authorization", "Bearer " + token)
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk()
-            .expectBodyList(Player.class).hasSize(players.size())
-            .consumeWith(response -> {
-               List<Player> list = response.getResponseBody();
-               list.sort(new Comparator<Player>() {
-                   @Override
-                   public int compare(Player p1, Player p2) {
-                       return p1.getFirstName().compareTo(p2.getFirstName());
-                   }
-               });
-                players.sort(new Comparator<Player>() {
-                    @Override
-                    public int compare(Player p1, Player p2) {
-                        return p1.getFirstName().compareTo(p2.getFirstName());
-                    }
-                });
-                for (int i = 0; i<list.size(); i++){
-                    Assertions.assertEquals(players.get(i).getId(), list.get(i).getId());
-                    Assertions.assertEquals(players.get(i).getFirstName(), list.get(i).getFirstName());
-                    Assertions.assertEquals(players.get(i).getLastName(), list.get(i).getLastName());
-                    Assertions.assertEquals(players.get(i).getEmail(), list.get(i).getEmail());
-                    Assertions.assertEquals(players.get(i).getImageUrl(), list.get(i).getImageUrl());
-                }
-            });
+            .expectBodyList(Player.class).hasSize(players.size());
     }
 
     @Then("the system creates the record and responds with http status code 201 and returns the new player with a unique id")
     public void verifyNewPlayer(){
         webTestClient
             .post().uri(url)
+            .header("Authorization", "Bearer " + token)
             .contentType(MediaType.APPLICATION_JSON)
             .body(Mono.just(player), Player.class)
             .accept(MediaType.APPLICATION_JSON)
@@ -206,6 +203,7 @@ public class PlayerDefinitions extends CucumberTest {
     public void verifyUpdatedPlayer(){
         webTestClient
             .put().uri(url)
+            .header("Authorization", "Bearer " + token)
             .contentType(MediaType.APPLICATION_JSON)
             .body(Mono.just(player), Player.class)
             .accept(MediaType.APPLICATION_JSON)
@@ -233,6 +231,7 @@ public class PlayerDefinitions extends CucumberTest {
     public void verifyDeletedPlayer(){
         webTestClient
             .delete().uri(url)
+            .header("Authorization", "Bearer " + token)
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isNoContent();
@@ -242,6 +241,7 @@ public class PlayerDefinitions extends CucumberTest {
     public void verifyGetDeletedPlayerFails(String id){
         webTestClient
             .get().uri("/players/" + id)
+            .header("Authorization", "Bearer " + token)
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isNotFound();
@@ -251,6 +251,7 @@ public class PlayerDefinitions extends CucumberTest {
     public void verifyCreatedPlayer(String message){
         webTestClient
             .post().uri(url)
+            .header("Authorization", "Bearer " + token)
             .contentType(MediaType.APPLICATION_JSON)
             .body(Mono.just(player), Player.class)
             .accept(MediaType.APPLICATION_JSON)
@@ -267,6 +268,7 @@ public class PlayerDefinitions extends CucumberTest {
     public void verifyUpdatedPlayer(String message){
         webTestClient
             .put().uri(url)
+            .header("Authorization", "Bearer " + token)
             .contentType(MediaType.APPLICATION_JSON)
             .body(Mono.just(player), Player.class)
             .accept(MediaType.APPLICATION_JSON)

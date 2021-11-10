@@ -1,0 +1,92 @@
+{
+    "count": 2,
+    "results": [
+        {
+            "_id": "c8TGiZ48ygoSPofx",
+            "data": {
+                "actionCategory": {
+                    "value": ""
+                },
+                "actionType": {
+                    "value": "action"
+                },
+                "actions": {
+                    "value": 1
+                },
+                "description": {
+                    "value": "<p>You propel yourself through water. In most calm water, you succeed at the action without needing to attempt a check. If you must breathe air and you're submerged in water, you must hold your breath each round. If you fail to hold your breath, you begin to drown. If the water you are swimming in is turbulent or otherwise dangerous, you might have to attempt an <span data-pf2-action=\"swim\" data-pf2-glyph=\"A\">Athletics</span> check to Swim.</p>\n<p>If you end your turn in water and haven't succeeded at a Swim action that turn, you sink 10 feet or get moved by the current, as determined by the GM. However, if your last action on your turn was to enter the water, you don't sink or move with the current that turn.</p>\n<hr />\n<p><strong>Critical Success</strong> You move through the water 10 feet, plus 5 feet per 20 feet of your land Speed (a total of 15 feet for most PCs).</p>\n<p><strong>Success</strong> You move through the water 5 feet, plus 5 feet per 20 feet of your land Speed (a total of 10 feet for most PCs).</p>\n<p><strong>Critical Failure</strong> You make no progress, and if you're holding your breath, you lose 1 round of air.</p>\n<h2>Sample Swim Tasks</h2>\n<ul>\n<li><strong>Untrained</strong> lake or other still water</li>\n<li><strong>Trained</strong> flowing water, like a river</li>\n<li><strong>Expert</strong> swiftly flowing river</li>\n<li><strong>Master</strong> stormy sea</li>\n<li><strong>Legendary</strong> maelstrom, waterfall</li>\n</ul>"
+                },
+                "requirements": {
+                    "value": ""
+                },
+                "rules": [],
+                "source": {
+                    "value": "Pathfinder Core Rulebook"
+                },
+                "traits": {
+                    "custom": "",
+                    "rarity": {
+                        "value": "common"
+                    },
+                    "value": [
+                        "move",
+                        "skill"
+                    ]
+                },
+                "trigger": {
+                    "value": ""
+                },
+                "weapon": {
+                    "value": ""
+                }
+            },
+            "effects": [],
+            "name": "Swim",
+            "type": "action"
+        },
+        {
+            "_id": "1OagaWtBpVXExToo",
+            "data": {
+                "actionCategory": {
+                    "value": ""
+                },
+                "actionType": {
+                    "value": "action"
+                },
+                "actions": {
+                    "value": 1
+                },
+                "description": {
+                    "value": "<p>To remember useful information on a topic, you can attempt to Recall Knowledge. You might know basic information about something without needing to attempt a check, but Recall Knowledge requires you to stop and think for a moment so you can recollect more specific facts and apply them. You might even need to spend time investigating first. For instance, to use Medicine to learn the cause of death, you might need to conduct a forensic examination before attempting to Recall Knowledge.</p>\n<p>The following skills can be used to Recall Knowledge, getting information about the listed topics. In some cases, you can get the GM's permission to use a different but related skill, usually against a higher DC than normal. Some topics might appear on multiple lists, but the skills could give different information. For example, Arcana might tell you about the magical defenses of a golem, whereas Crafting could tell you about its sturdy resistance to physical attacks.</p>\n<p><strong>Lore</strong>: The subject of the Lore skill's subcategory.</p>\n<p>The GM might allow checks to Recall Knowledge using other skills. For example, you might assess the skill of an acrobat using Acrobatics. If you're using a physical skill (like in this example), the GM will most likely have you use a mental ability score-typically Intelligence-instead of the skill's normal physical ability score.</p>\n<hr />\n<p><strong>Critical Success</strong> You recall the knowledge accurately and gain additional information or context.</p>\n<p><strong>Success</strong> You recall the knowledge accurately or gain a useful clue about your current situation.</p>\n<p><strong>Critical Failure</strong> You recall incorrect information or gain an erroneous or misleading clue.</p><h2 class=\"title\">Sample Recall Knowledge Tasks</h2>\n<p>These examples use Society or Religion.</p>\n<ul>\n<li><strong>Untrained</strong> name of a ruler, key noble, or major deity</li>\n<li><strong>Trained</strong> line of succession for a major noble family, core doctrines of a major deity</li>\n<li><strong>Expert</strong> genealogy of a minor noble, teachings of an ancient priest</li>\n<li><strong>Master</strong> hierarchy of a genie noble court, major extraplanar temples of a deity</li>\n<li><strong>Legendary</strong> existence of a long-lost noble heir, secret doctrines of a religion</li>\n</ul>"
+                },
+                "requirements": {
+                    "value": ""
+                },
+                "rules": [],
+                "source": {
+                    "value": "Pathfinder Core Rulebook"
+                },
+                "traits": {
+                    "custom": "",
+                    "rarity": {
+                        "value": "common"
+                    },
+                    "value": [
+                        "concentrate",
+                        "skill",
+                        "secret"
+                    ]
+                },
+                "trigger": {
+                    "value": ""
+                },
+                "weapon": {
+                    "value": ""
+                }
+            },
+            "effects": [],
+            "name": "Recall Knowledge (Lore)",
+            "type": "action"
+        }
+	]
+}

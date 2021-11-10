@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Identification {
-    private String status;
-    private Unidentified unidentified;
+public class Items {
+    private Item item1;
+    private Item item2;
 }

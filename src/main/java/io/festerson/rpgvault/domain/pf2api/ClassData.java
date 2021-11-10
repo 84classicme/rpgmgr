@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class ClassData {
+public class ClassData extends ItemData {
     private ValueIntegerList abilityBoostLevels;
     private ValueIntegerList ancestryFeatLevels;
     private Attacks attacks;

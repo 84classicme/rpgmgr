@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 public class Item {
     private String id;
     private String img;
-    private String level;
+    private Integer level;
     private String name;
     private String pack;
 }

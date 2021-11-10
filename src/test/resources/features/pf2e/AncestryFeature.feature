@@ -1,4 +1,4 @@
-@PF2e @AncestryFeature
+@RPGmgr @PF2e @AncestryFeature
 
 Feature: Fetch ancestry feature data from remote PF2e SRD rest endpoints
 

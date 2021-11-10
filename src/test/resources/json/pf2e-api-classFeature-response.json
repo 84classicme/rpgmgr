@@ -1,0 +1,107 @@
+{
+    "count": 2,
+    "results": [
+        {
+            "_id": "GI5IAl4dkly4At8e",
+            "data": {
+                "actionCategory": {
+                    "value": ""
+                },
+                "actionType": {
+                    "value": "passive"
+                },
+                "actions": {
+                    "value": null
+                },
+                "description": {
+                    "value": "<p>At 5th level and every 5 levels thereafter, boost four different ability scores. You can use these boosts to increase ability scores above 18. Boosting an ability score increases it by 1 if it's already 18 or above, or by 2 if it starts out below 18.</p>\n<p>Your eidolon also gets four ability boosts at these levels. The eidolon's ability boosts follow the same rules as yours.</p>"
+                },
+                "featType": {
+                    "value": "classfeature"
+                },
+                "level": {
+                    "value": 5
+                },
+                "location": "",
+                "prerequisites": {
+                    "value": []
+                },
+                "rules": [],
+                "source": {
+                    "value": ""
+                },
+                "traits": {
+                    "custom": "",
+                    "rarity": {
+                        "value": "common"
+                    },
+                    "value": [
+                        "summoner"
+                    ]
+                }
+            },
+            "effects": [],
+            "name": "Ability Boosts",
+            "type": "feat"
+        },
+        {
+            "_id": "5cthRUkRqRtduVvN",
+            "data": {
+                "actionCategory": {
+                    "value": ""
+                },
+                "actionType": {
+                    "value": "passive"
+                },
+                "actions": {
+                    "value": null
+                },
+                "description": {
+                    "value": "<p>When you focus your will into your limbs, your blows are as unyielding as the hardest of metals. Your unarmed attacks are treated as adamantine.</p>"
+                },
+                "featType": {
+                    "value": "classfeature"
+                },
+                "level": {
+                    "value": 17
+                },
+                "location": "",
+                "prerequisites": {
+                    "value": []
+                },
+                "rules": [
+                    {
+                        "key": "DamageDice",
+                        "predicate": {
+                            "all": [
+                                "unarmed"
+                            ],
+                            "not": [
+                                "suppress-adamantine-strike"
+                            ]
+                        },
+                        "selector": "damage",
+                        "traits": [
+                            "adamantine"
+                        ]
+                    }
+                ],
+                "source": {
+                    "value": ""
+                },
+                "traits": {
+                    "custom": "",
+                    "rarity": {
+                        "value": "common"
+                    },
+                    "value": [
+                        "monk"
+                    ]
+                }
+            },
+            "effects": [],
+            "name": "Adamantine Strikes",
+            "type": "feat"
+        }
+	]
+}

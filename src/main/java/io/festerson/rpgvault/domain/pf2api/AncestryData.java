@@ -3,9 +3,11 @@ package io.festerson.rpgvault.domain.pf2api;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
-public class AncestryData {
+public class AncestryData extends ItemData{
     private AdditionalLanguages additionalLanguages;
     private Boosts boosts;
     private ValueString description;
@@ -13,6 +15,7 @@ public class AncestryData {
     private Integer hp;
     private Languages languages;
     private Integer reach;
+    private List<Rule> rules;
     private String size;
     private ValueString source;
     private Integer speed;

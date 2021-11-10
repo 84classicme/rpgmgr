@@ -10,7 +10,8 @@ import java.util.List;
 public class SpellData {
     private ValueString ability;
     private SpellArea area;
-    private ValueInteger autoHeightenedLevel;
+    private ValueString areasize;
+    private ValueInteger autoHeightenLevel;
     private ValueString category;
     private SpellComponents components;
     private ValueString cost;
@@ -21,10 +22,13 @@ public class SpellData {
     private ValueString location;
     private ValueString materials;
     private ValueString prepared;
+    private ValueString primarycheck;
     private ValueString range;
     private List<Rule> rules;
     private SpellSave save;
     private ValueString school;
+    private ValueString secondarycasters;
+    private ValueString secondarycheck;
     private ValueString source;
     private ValueString spellType;
     private ValueBoolean sustained;

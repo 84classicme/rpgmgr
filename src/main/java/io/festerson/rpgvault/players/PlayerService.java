@@ -21,9 +21,7 @@ import static io.festerson.rpgvault.MdcConfig.logOnNext;
 @Service
 public class PlayerService {
 
-    //private static final Logger log = LoggerFactory.getLogger(PlayerService.class);
-
-    @Autowired
+   @Autowired
     private PlayerRepository playerRepository;
 
     @Value( "${soap.country-service.endpoint-url}" )

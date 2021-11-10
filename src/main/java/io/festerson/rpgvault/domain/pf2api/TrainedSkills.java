@@ -9,5 +9,6 @@ import java.util.List;
 @NoArgsConstructor
 public class TrainedSkills {
     private Integer additional;
+    private String custom;
     private List<String> value;
 }

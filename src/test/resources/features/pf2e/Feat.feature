@@ -1,4 +1,4 @@
-@PF2e @Feat
+@RPGmgr @PF2e @Feat
 
 Feature: Fetch feat data from remote PF2e SRD rest endpoints
 

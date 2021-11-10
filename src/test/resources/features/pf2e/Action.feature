@@ -1,4 +1,4 @@
-@PF2e @Action
+@RPGmgr @PF2e @Action
 
 Feature: Fetch action data from remote PF2e SRD rest endpoints
 

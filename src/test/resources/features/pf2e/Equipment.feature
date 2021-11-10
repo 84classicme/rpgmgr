@@ -1,4 +1,4 @@
-@PF2e @Equipment
+@RPGmgr @PF2e @Equipment
 
 Feature: Fetch equipment data from remote PF2e SRD rest endpoints
 

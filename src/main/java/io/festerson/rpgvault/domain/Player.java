@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 public class Player {
 
     @Id
+    @JsonProperty("id")
     private String id;
 
     @NotBlank

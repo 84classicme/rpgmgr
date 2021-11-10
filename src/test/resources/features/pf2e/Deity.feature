@@ -1,4 +1,4 @@
-@PF2e @Deity
+@RPGmgr @PF2e @Deity
 
 Feature: Fetch deity data from remote PF2e SRD rest endpoints
 

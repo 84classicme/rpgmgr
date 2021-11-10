@@ -1,4 +1,4 @@
-@PF2e @ClassFeature
+@RPGmgr @PF2e @ClassFeature
 
 Feature: Fetch class feature data from remote PF2e SRD rest endpoints
 

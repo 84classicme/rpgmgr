@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class BackgroundData {
+public class BackgroundData extends ItemData {
     private Boosts boosts;
     private ValueString description;
     private List<Rule> rules;
