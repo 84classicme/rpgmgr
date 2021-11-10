@@ -6,6 +6,390 @@
 	},
 	"item": [
 		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "Get  Players",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/players",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"players"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "pf2e",
+			"item": [
+				{
+					"name": "Load PF2e Feats",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pf2e/feats/load",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pf2e",
+								"feats",
+								"load"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Load PF2e Classes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pf2e/classes/load",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pf2e",
+								"classes",
+								"load"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Load PF2e Backgrounds",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pf2e/backgrounds/load",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pf2e",
+								"backgrounds",
+								"load"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Load PF2e Spells",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pf2e/spells/load",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pf2e",
+								"spells",
+								"load"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Load PF2e Actions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pf2e/actions/load",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pf2e",
+								"actions",
+								"load"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get PF2e Spells",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pf2e/spells",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pf2e",
+								"spells"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Load PF2e Ancestries",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pf2e/ancestries/load",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pf2e",
+								"ancestries",
+								"load"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Load PF2e Ancestry Features",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pf2e/ancestryFeatures/load",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pf2e",
+								"ancestryFeatures",
+								"load"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Load PF2e Class Features",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pf2e/classFeatures/load",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pf2e",
+								"classFeatures",
+								"load"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Load PF2e Equipment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pf2e/equipment/load",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pf2e",
+								"equipment",
+								"load"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Load PF2e Deities",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pf2e/deities/load",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pf2e",
+								"deities",
+								"load"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Load PF2e Archetypes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{auth_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/pf2e/archetypes/load",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pf2e",
+								"archetypes",
+								"load"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Get Token",
 			"event": [
 				{
@@ -21,6 +405,21 @@
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -197,7 +596,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"fistname\":\"Steve\",\n\"lastname\":\"Bishop\",\n\"country\":\"US\",\n\"email\":\"sb@notu.com\",\n\"img\":\"\"\n}"
+					"raw": "{\n\"fistname\":\"Steve\",\n\"lastname\":\"Bishopdeux\",\n\"country\":\"US\",\n\"email\":\"sb@notu.com\",\n\"img\":\"\"\n}"
 				},
 				"url": {
 					"raw": "{{url}}/players",
