@@ -315,6 +315,7 @@ public class PF2eService {
     }
 
     public Mono<EquipmentResponse> getEquipment(){
+        log.error("getEquipment::START");
         webClientConfig = new WebClientConfig();
         WebClient reactiveRestClient = webClientConfig.getReactivePF2eClient();
         return reactiveRestClient.get()
@@ -326,6 +327,7 @@ public class PF2eService {
                     return Mono.error(handleStatusCode(response));
                 }
             })
+            .log()
             .retryWhen(Retry.backoff(3, Duration.ofSeconds(5))
                 .filter(throwable -> !(throwable instanceof ClientException))
                 .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> {
@@ -465,8 +467,9 @@ public class PF2eService {
     }
 
     private Mono<Void> handleServiceException(ServiceException e){
-        log.error("Handling service exception in PF2eService." + e.getSuppressed());
-        return recordException(e);
+        log.error("Handling service exception in PF2eService." + e.getMessage() + " " + e.getCause() + " " + e.getStackTrace());
+        return Mono.empty();
+        //return recordException(e);
     }
 
     private Mono<Void> handleClientException(ClientException e){

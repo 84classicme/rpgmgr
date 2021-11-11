@@ -6,7 +6,7 @@
     <groupId>io.festerson</groupId>
     <artifactId>rpgmgr</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>rpgvault</name>
+    <name>RPGmgr</name>
     <description>Character vault for D&amp;D 5e campaigns</description>
 
     <parent>

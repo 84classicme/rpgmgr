@@ -19,7 +19,7 @@ public class Player {
 
     @Id
     @JsonProperty("id")
-    private String id;
+    private String _id;
 
     @NotBlank
     @JsonProperty("firstname")

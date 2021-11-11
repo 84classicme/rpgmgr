@@ -18,7 +18,8 @@ import java.util.List;
 public class Campaign {
 
     @Id
-    private String id;
+    @JsonProperty("id")
+    private String _id;
 
     @NotBlank
     private String name;

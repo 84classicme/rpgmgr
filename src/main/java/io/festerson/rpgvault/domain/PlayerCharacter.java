@@ -19,7 +19,8 @@ import javax.validation.constraints.NotNull;
 public class PlayerCharacter {
 
     @Id
-    private String id;
+    @JsonProperty("id")
+    private String _id;
 
     @NotBlank(message = "Every character must have a name!!!!!")
     private String name;
