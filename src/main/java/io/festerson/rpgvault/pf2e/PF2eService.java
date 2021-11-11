@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
@@ -410,6 +411,13 @@ public class PF2eService {
         return pf2eSpellRepository.save(spell).then();
     }
 
+    public Flux<SpellResult> getSpellByName(String name){ return pf2eSpellRepository.getSpellByName(name); }
+
+    public Mono<SpellResult> getSpellById(String id){ return pf2eSpellRepository.getSpellById(id); }
+
+    public Flux<SpellResult> getSpellByTradition(String tradition){
+        return pf2eSpellRepository.getSpellByTradition(tradition);
+    }
 
     public Mono<Void> saveActions(List<ActionResult> actions){
         return pf2eActionRepository.saveAll(actions).then();

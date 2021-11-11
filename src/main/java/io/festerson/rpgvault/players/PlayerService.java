@@ -44,7 +44,7 @@ public class PlayerService {
     public Mono<Player> updatePlayer(String id, Player player){
         return playerRepository.findById(id)
             .map(found -> {
-                player.setId(id);
+                player.set_id(id);
                 if(player.getFirstName() != null && !player.getFirstName().isEmpty())
                 found.setFirstName(player.getFirstName());
                 if(player.getLastName() != null && !player.getLastName().isEmpty())

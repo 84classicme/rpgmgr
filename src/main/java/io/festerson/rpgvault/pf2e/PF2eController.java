@@ -5,9 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -145,11 +143,46 @@ public class PF2eController {
                 .build());
     }
 
-    @GetMapping("/spells")
+    @GetMapping("/spells/all")
     public Mono<ResponseEntity<List<SpellResult>>> getSpells() {
         return pf2eService.getSpells()
             .map(SpellResponse::getResults)
             .map(list -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(list));
+    }
+
+    @GetMapping("/spells")
+    public Mono<ResponseEntity<List<SpellResult>>> getSpellByName(@RequestParam(value="name") String name) {
+        return pf2eService.getSpellByName(name)
+            .collectList()
+            .map(list -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(list))
+            .defaultIfEmpty(ResponseEntity.notFound().build())
+            .onErrorReturn(ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .header("RpgMgrMessage", "Server error fetching spell name: " + name)
+                .build());
+    }
+
+    @GetMapping("/spells/{id}")
+    public Mono<ResponseEntity<SpellResult>> getSpellById(@PathVariable String id) {
+        return pf2eService.getSpellById(id)
+            .map(spell -> ResponseEntity.ok().body(spell))
+            .defaultIfEmpty(ResponseEntity.notFound().build())
+            .onErrorReturn(ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .header("RpgMgrMessage", "Server error fetching spell id: " + id)
+                .build());
+    }
+
+    @GetMapping("/spells/tradition/{tradition}")
+    public Mono<ResponseEntity<List<SpellResult>>> getSpellByTradition(@PathVariable String tradition) {
+        return pf2eService.getSpellByTradition(tradition)
+            .collectList()
+            .map(list -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(list))
+            .defaultIfEmpty(ResponseEntity.notFound().build())
+            .onErrorReturn(ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .header("RpgMgrMessage", "Server error fetching spell tradition: " + tradition)
+                .build());
     }
 
     @GetMapping("/spells/load")

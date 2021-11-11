@@ -127,7 +127,7 @@ public class TestUtils {
     public static Player buildPlayer(String id, String firstName, String lastName, String email, String country, String imageUrl){
         return Player
             .builder()
-            .id(id)
+            ._id(id)
             .firstName(firstName)
             .lastName(lastName)
             .email(email)

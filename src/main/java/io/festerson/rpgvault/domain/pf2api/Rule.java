@@ -24,7 +24,7 @@ public class Rule {
     private Object value;
 
     @JsonProperty("outcome")
-    private void unpackNestedItems(Object o) {
+    private void unpackOutcomes(Object o) {
         outcomes = new ArrayList();
         if(o instanceof String){
             outcomes.add((String)o);

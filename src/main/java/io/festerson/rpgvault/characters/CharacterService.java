@@ -34,7 +34,7 @@ public class CharacterService {
     public Mono<PlayerCharacter> updateCharacter(String id, PlayerCharacter playerCharacter){
         return characterRepository.findById(id)
             .flatMap(found -> {
-                found.setId(id);
+                found.set_id(id);
                 if(playerCharacter.getAc() != null && !playerCharacter.getAc().toString().isEmpty())
                     found.setAc(playerCharacter.getAc());
                 if(playerCharacter.getCclass() != null)

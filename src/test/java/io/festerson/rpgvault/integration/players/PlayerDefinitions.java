@@ -107,7 +107,7 @@ public class PlayerDefinitions extends CucumberTest {
     }
 
     @And("I PUT a request into the system")
-    public void setPutUrl(){ url = "/players/" + player.getId(); }
+    public void setPutUrl(){ url = "/players/" + player.get_id(); }
 
     @When("an invalid {word} {word} or {word} is used in player data")
     public void createInvalidPlayer(String firstname, String lastname, String email){
@@ -184,12 +184,12 @@ public class PlayerDefinitions extends CucumberTest {
             .consumeWith(response -> {
                 Player newplayer =  response.getResponseBody();
                 Assertions.assertNotNull(newplayer);
-                Assertions.assertNotNull(newplayer.getId());
+                Assertions.assertNotNull(newplayer.get_id());
                 Assertions.assertEquals(player.getFirstName(), newplayer.getFirstName());
                 Assertions.assertEquals(player.getLastName(), newplayer.getLastName());
                 Assertions.assertEquals(player.getEmail(), newplayer.getEmail());
                 Assertions.assertEquals(player.getImageUrl(), newplayer.getImageUrl());
-                Player found = repository.findById(newplayer.getId()).block();
+                Player found = repository.findById(newplayer.get_id()).block();
                 Assertions.assertNotNull(found);
                 Assertions.assertEquals(player.getFirstName(), found.getFirstName());
                 Assertions.assertEquals(player.getLastName(), found.getLastName());
@@ -213,12 +213,12 @@ public class PlayerDefinitions extends CucumberTest {
             .consumeWith(response -> {
                 Player updated =  response.getResponseBody();
                 Assertions.assertNotNull(updated);
-                Assertions.assertNotNull(player.getId());
+                Assertions.assertNotNull(player.get_id());
                 Assertions.assertEquals(player.getFirstName(), updated.getFirstName());
                 Assertions.assertEquals(player.getLastName(), updated.getLastName());
                 Assertions.assertEquals(player.getEmail(), updated.getEmail());
                 Assertions.assertEquals(player.getImageUrl(), updated.getImageUrl());
-                Player found = repository.findById(updated.getId()).block();
+                Player found = repository.findById(updated.get_id()).block();
                 Assertions.assertNotNull(found);
                 Assertions.assertEquals(player.getFirstName(), found.getFirstName());
                 Assertions.assertEquals(player.getLastName(), found.getLastName());
