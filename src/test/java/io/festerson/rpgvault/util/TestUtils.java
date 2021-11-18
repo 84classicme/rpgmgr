@@ -131,7 +131,7 @@ public class TestUtils {
             .firstName(firstName)
             .lastName(lastName)
             .email(email)
-            .country(country)
+            .timezone(country)
             .imageUrl(imageUrl)
             .build();
     }

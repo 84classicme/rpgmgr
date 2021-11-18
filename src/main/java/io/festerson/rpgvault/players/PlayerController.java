@@ -36,6 +36,7 @@ public class PlayerController {
     @ResponseStatus(HttpStatus.OK)
     public Mono<ResponseEntity<List<Player>>> getPlayers(Principal principal) {
         //log.info("Getting data for all players.");
+        String user = principal !=null && principal.getName() != null ? principal.getName() : "";
         return playerService.getPlayers()
             .collectList()
             .doOnEach(logOnNext(list -> log.info("found {} players", list != null ? list.size() : 0)))
@@ -44,7 +45,7 @@ public class PlayerController {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .header("RpgMgrMessage", "Server error fetching all players")
                 .build())
-            .contextWrite(Context.of("USER",  principal.getName()));
+            .contextWrite(Context.of("USER", user));
     }
 
     @GetMapping(value="/{playerId}")

@@ -35,8 +35,8 @@ public class Player {
     private String email;
 
     @NotBlank
-    @JsonProperty("country")
-    private String country;
+    @JsonProperty("timezone")
+    private String timezone;
 
     @JsonProperty("img")
     private String imageUrl;
@@ -45,11 +45,11 @@ public class Player {
             String firstName,
             String lastName,
             String email,
-            String country,
+            String timezone,
             String imageUrl) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.country = country;
+        this.timezone = timezone;
         this.email = email;
         this.imageUrl = imageUrl;
     }

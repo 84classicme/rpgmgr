@@ -57,7 +57,7 @@ public class SpellDefinitions extends CucumberTest {
             .willReturn(status(200)
                 .withHeader("Content-Type", "application/json")
                 .withBody(mapper.writeValueAsString(expected))));
-        SpellResponse response = pf2eService.getSpells().block();
+        SpellResponse response = pf2eService.getSpellsFromExternalSource().block();
         Assertions.assertNotNull(response.getResults());
         Assertions.assertNotNull(response.getCount());
         Assertions.assertNotEquals(0, response.getCount());

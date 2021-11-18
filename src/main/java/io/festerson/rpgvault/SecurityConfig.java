@@ -39,6 +39,9 @@ public class SecurityConfig {
             .pathMatchers(HttpMethod.OPTIONS).permitAll()
             .pathMatchers("/auth").permitAll()
             .pathMatchers("/pf2e/**").permitAll()
+            .pathMatchers("/dnd/**").permitAll()
+            .pathMatchers("/players/**").permitAll()
+            .pathMatchers("/spells/**").permitAll()
             // swagger ui entry point is  http://localhost:8080/swagger-ui.html and then redirects
             // springdoc v3 api json entry point is /v3/api-docs
             .pathMatchers("/webjars/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs", "/v3/api-docs/**").permitAll()

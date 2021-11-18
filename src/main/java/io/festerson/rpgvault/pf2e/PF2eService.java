@@ -377,7 +377,7 @@ public class PF2eService {
                             clientException))));
     }
 
-    public Mono<SpellResponse> getSpells(){
+    public Mono<SpellResponse> getSpellsFromExternalSource(){
         webClientConfig = new WebClientConfig();
         WebClient reactiveRestClient = webClientConfig.getReactivePF2eClient();
         return reactiveRestClient.get()
@@ -411,7 +411,9 @@ public class PF2eService {
         return pf2eSpellRepository.save(spell).then();
     }
 
-    public Flux<SpellResult> getSpellByName(String name){ return pf2eSpellRepository.getSpellByName(name); }
+    public Flux<SpellResult> getAllSpellsByLevelAndName(){ return pf2eSpellRepository.findAllBy(); }
+
+    public Flux<SpellResult> getSpellByName(String name){ return pf2eSpellRepository.searchSpellsByName(name); }
 
     public Mono<SpellResult> getSpellById(String id){ return pf2eSpellRepository.getSpellById(id); }
 

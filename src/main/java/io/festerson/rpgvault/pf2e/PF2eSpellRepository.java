@@ -11,11 +11,14 @@ import reactor.core.publisher.Mono;
 public interface PF2eSpellRepository extends ReactiveMongoRepository<SpellResult, String> {
 
     @Query("{ 'name': {'$regex': ?0, $options: 'i'} }")    // case insensitive "like" query
-    public Flux<SpellResult> getSpellByName(String name);
+    public Flux<SpellResult> searchSpellsByName(String name);
 
     @Query("{ '_id': ?0 }")
     public Mono<SpellResult> getSpellById(String id);
 
     @Query("{ 'data.traditions.value': ?0 }")
     public Flux<SpellResult> getSpellByTradition(String tradition);
+
+    @Query(value ="{'data.category.value':{'$eq' : 'spell'}}", sort = "{'data.level.value': 1, 'name': 1}")
+    public Flux<SpellResult> findAllBy();
 }

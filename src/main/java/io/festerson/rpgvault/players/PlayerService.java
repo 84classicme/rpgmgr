@@ -49,8 +49,8 @@ public class PlayerService {
                 found.setFirstName(player.getFirstName());
                 if(player.getLastName() != null && !player.getLastName().isEmpty())
                 found.setLastName(player.getLastName());
-                if(player.getCountry() != null && !player.getCountry().isEmpty())
-                found.setCountry(player.getCountry());
+                if(player.getTimezone() != null && !player.getTimezone().isEmpty())
+                found.setTimezone(player.getTimezone());
                 if(player.getEmail() != null && !player.getEmail().isEmpty())
                 found.setEmail(player.getEmail());
                 if(player.getImageUrl() != null)

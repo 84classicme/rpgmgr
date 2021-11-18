@@ -130,7 +130,7 @@ public class PlayerDefinitions extends CucumberTest {
     public void addPlayerLastName(String lastName){ player.setLastName(lastName); }
 
     @And("country is {word}")
-    public void addPlayerCountry(String country){ player.setCountry(country); }
+    public void addPlayerCountry(String country){ player.setTimezone(country); }
 
     @And("email is {word}")
     public void addPlayerEmail(String email){ player.setEmail(email); }
