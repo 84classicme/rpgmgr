@@ -19,7 +19,7 @@ public class CClass {
     private List<ValueTrinity> proficiencies;
     private List<ValueTrinity> saving_throws;
     private List<Equipment> starting_equipment;
-   // private List<EquipmentOptions> starting_equipment_options;
+    private List<EquipmentOptions> starting_equipment_options;
     private String class_levels;
     private Multiclassing multi_classing;
     private Spellcasting spellcasting;
