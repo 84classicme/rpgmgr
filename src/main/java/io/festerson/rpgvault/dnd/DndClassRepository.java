@@ -8,4 +8,5 @@ import reactor.core.publisher.Flux;
 @Repository
 public interface DndClassRepository extends ReactiveMongoRepository<CClass, String> {
     public Flux<CClass> findAll();
+
 }

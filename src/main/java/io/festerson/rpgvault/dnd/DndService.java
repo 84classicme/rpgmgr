@@ -26,6 +26,9 @@ public class DndService {
     private DndClassRepository dndClassRepository;
 
     @Autowired
+    private DndLevelRepository dndLevelRepository;
+
+    @Autowired
     private DndSkillRepository dndSkillRepository;
 
     @Autowired
@@ -46,6 +49,10 @@ public class DndService {
 
     public Flux<CClass> getAllClasses(){
         return dndClassRepository.findAll().onErrorResume(t -> Mono.error(handleException(t)));
+    }
+
+    public Flux<Level> getLevelsForClass(String name){
+        return dndLevelRepository.getLevelsForClass(name).onErrorResume(t -> Mono.error(handleException(t)));
     }
 
     public Flux<Background> getAllBackgrounds(){
