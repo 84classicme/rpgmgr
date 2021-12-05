@@ -15,4 +15,5 @@ public class Level {
     private Integer ability_score_bonuses;
     private Integer prof_bonus;
     private List<ValueTrinity> features;
+    private LevelSpellcasting spellcasting;
 }

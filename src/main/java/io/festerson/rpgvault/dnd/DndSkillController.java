@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -24,15 +21,25 @@ public class DndSkillController {
     DndService dndService;
 
     @GetMapping("/skills")
-    public Mono<ResponseEntity<List<Skill>>> getSpellByName(@RequestParam(value="name", required=false) String name) {
+    public Mono<ResponseEntity<List<Skill>>> getAllSkills() {
         return dndService.getAllSkills()
             .collectList()
             .map(list -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(list))
             .defaultIfEmpty(ResponseEntity.notFound().build())
             .onErrorReturn(ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .header("RpgMgrMessage", "Server error getting all dnd races.")
+                .header("RpgMgrMessage", "Server error getting all dnd skills.")
                 .build());
     }
 
+    @GetMapping("/skills/{name}")
+    public Mono<ResponseEntity<Skill>> getSkill(@PathVariable String name) {
+        return dndService.getSkill(name)
+            .map(feature -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(feature))
+            .defaultIfEmpty(ResponseEntity.notFound().build())
+            .onErrorReturn(ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .header("RpgMgrMessage", "Server error getting skill with name." + name)
+                .build());
+    }
 }

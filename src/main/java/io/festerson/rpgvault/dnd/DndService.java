@@ -23,6 +23,9 @@ public class DndService {
     private DndRaceRepository dndRaceRepository;
 
     @Autowired
+    private DndSubraceRepository dndSubraceRepository;
+
+    @Autowired
     private DndClassRepository dndClassRepository;
 
     @Autowired
@@ -43,8 +46,24 @@ public class DndService {
     @Autowired
     private DndAlignmentRepository dndAlignmentRepository;
 
+    @Autowired
+    private DndFeatureRepository dndFeatureRepository;
+
+    @Autowired
+    private DndTraitRepository dndTraitRepository;
+
+    @Autowired
+    private DndAbilityScoreRepository dndAbilityScoreRepository;
+
+    @Autowired
+    private DndEquipmentRepository dndEquipmentRepository;
+
     public Flux<Race> getAllRaces(){
         return dndRaceRepository.findAll().onErrorResume(t -> Mono.error(handleException(t)));
+    }
+
+    public Flux<Subrace> getAllSubraces(String race){
+        return dndSubraceRepository.findAllByRaceIndex(race).onErrorResume(t -> Mono.error(handleException(t)));
     }
 
     public Flux<CClass> getAllClasses(){
@@ -63,6 +82,10 @@ public class DndService {
         return dndSkillRepository.findAll().onErrorResume(t -> Mono.error(handleException(t)));
     }
 
+    public Mono<Skill> getSkill(String index){
+        return dndSkillRepository.findByIndex(index).onErrorResume(t -> Mono.error(handleException(t)));
+    }
+
     public Flux<Proficiency> getAllProficiencies(){
         return dndProficiencyRepository.findAll().onErrorResume(t -> Mono.error(handleException(t)));
     }
@@ -71,12 +94,35 @@ public class DndService {
         return dndProficiencyRepository.findAllByType(type).onErrorResume(t -> Mono.error(handleException(t)));
     }
 
+    public Flux<Proficiency> getOtherToolProficiencies(){
+        return dndProficiencyRepository.getOtherToolProficiencies().onErrorResume(t -> Mono.error(handleException(t)));
+    }
+
     public Flux<Language> getAllLanguages(){
         return dndLanguageRepository.findAll().onErrorResume(t -> Mono.error(handleException(t)));
     }
 
+    public Mono<Language> getLanguageByIndex(String index){
+        return dndLanguageRepository.findByIndex(index).onErrorResume(t -> Mono.error(handleException(t)));
+    }
+
     public Flux<Alignment> getAllAlignments(){
         return dndAlignmentRepository.findAll().onErrorResume(t -> Mono.error(handleException(t)));
+    }
+
+    public Mono<Feature> getFeature(String name){
+        return dndFeatureRepository.findByIndex(name).onErrorResume(t -> Mono.error(handleException(t)));
+    }
+    public Mono<Trait> getTrait(String name){
+        return dndTraitRepository.findByIndex(name).onErrorResume(t -> Mono.error(handleException(t)));
+    }
+
+    public Mono<AbilityScore> getAbilityScore(String name){
+        return dndAbilityScoreRepository.findByIndex(name).onErrorResume(t -> Mono.error(handleException(t)));
+    }
+
+    public Mono<EquipmentDetail> getEquipment(String name){
+        return dndEquipmentRepository.findByName(name).onErrorResume(t -> Mono.error(handleException(t)));
     }
 
     private RuntimeException handleStatusCode(ClientResponse response){

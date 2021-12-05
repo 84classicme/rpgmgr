@@ -24,7 +24,7 @@ public class DndProficiencyController {
     DndService dndService;
 
     @GetMapping("/proficiencies")
-    public Mono<ResponseEntity<List<Proficiency>>> getSpellByName(@RequestParam(value="type", required=false) String type) {
+    public Mono<ResponseEntity<List<Proficiency>>> getProficiencies(@RequestParam(value="type", required=false) String type) {
         if(type == null || type.isBlank()) {
             return dndService.getAllProficiencies()
                 .collectList()
@@ -41,7 +41,19 @@ public class DndProficiencyController {
             .defaultIfEmpty(ResponseEntity.notFound().build())
             .onErrorReturn(ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .header("RpgMgrMessage", "Server error getting all dnd proficiencies.")
+                .header("RpgMgrMessage", "Server error getting all dnd proficiency with type " + type)
+                .build());
+    }
+
+    @GetMapping("/proficiencies/othertools")
+    public Mono<ResponseEntity<List<Proficiency>>> getOtherTools() {
+        return dndService.getOtherToolProficiencies()
+            .collectList()
+            .map(list -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(list))
+            .defaultIfEmpty(ResponseEntity.notFound().build())
+            .onErrorReturn(ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .header("RpgMgrMessage", "Server error getting all dnd othertool proficiencies.")
                 .build());
     }
 

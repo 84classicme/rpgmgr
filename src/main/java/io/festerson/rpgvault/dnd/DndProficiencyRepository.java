@@ -13,4 +13,7 @@ public interface DndProficiencyRepository extends ReactiveMongoRepository<Profic
 
     @Query(value ="{ 'type': ?0 }", sort = "{'name': 1}")
     public Flux<Proficiency> findAllByType(String type);
+
+    @Query(value ="{'type': {$in:['Kits', 'Vehicles', 'Other Tools', 'Gaming Sets']}}", sort = "{'name': 1}")
+    Flux<Proficiency> getOtherToolProficiencies();
 }

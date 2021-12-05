@@ -14,12 +14,13 @@ public class Race {
     private String name;
     private Integer speed;
     private List<AbilityBonus> ability_bonuses;
+    private AbilityOptionsTrinity ability_bonus_options;
     private String alignment;
     private String age;
     private String size;
     private String size_description;
     private List<ValueTrinity> starting_proficiencies;
-    OptionsTrinity starting_proficiency_optionsTrinity;
+    OptionsTrinity starting_proficiency_options;
     private List<ValueTrinity> languages;
     private String language_desc;
     private List<ValueTrinity> traits;

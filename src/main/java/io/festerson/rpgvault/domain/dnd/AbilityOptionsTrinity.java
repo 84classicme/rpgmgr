@@ -7,8 +7,8 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class EquipmentOptions {
+public class AbilityOptionsTrinity {
     private Integer choose;
     private String type;
-    private List<Equipment> from;
+    private List<AbilityBonus> from;
 }

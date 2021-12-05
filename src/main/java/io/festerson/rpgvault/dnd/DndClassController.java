@@ -22,7 +22,7 @@ public class DndClassController {
     DndService dndService;
 
     @GetMapping("/classes")
-    public Mono<ResponseEntity<List<CClass>>> getSpellByName(@RequestParam(value="name", required=false) String name) {
+    public Mono<ResponseEntity<List<CClass>>> getClasses() {
         return dndService.getAllClasses()
             .collectList()
             .map(list -> ResponseEntity.ok().contentType(APPLICATION_JSON).body(list))
