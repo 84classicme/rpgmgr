@@ -1,0 +1,14 @@
+package io.festoso.rpgvault.domain.pf2api;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+public class TrainedSkills {
+    private Integer additional;
+    private String custom;
+    private List<String> value;
+}
